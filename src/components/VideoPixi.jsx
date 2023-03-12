@@ -1,5 +1,5 @@
-import React, { Fragment, useRef, useState, useEffect } from "react";
-import { Graphics, render } from "@inlet/react-pixi";
+import React, { Fragment, useRef } from "react";
+import { Graphics } from "@inlet/react-pixi";
 
 import * as PIXI from "pixi.js";
 
@@ -45,8 +45,7 @@ export const VideoPixi = () => {
     videoSprite.name="video"
     
     container.addChild(videoSprite);
-    
-    console.log(container.children);
+
 
 
   }

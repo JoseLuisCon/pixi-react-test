@@ -1,7 +1,6 @@
 import React, { Fragment, useRef } from "react";
 import { Graphics, Text } from "@inlet/react-pixi";
 
-import * as PIXI from "pixi.js";
 
 const draw1 = (g) => {
   g.beginFill(0x8FD7C5);

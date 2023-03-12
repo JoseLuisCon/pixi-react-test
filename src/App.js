@@ -1,10 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
+import { ReSize } from './components/ReSize';
 
 function App() {
   return (
     <div className="App">
-      
+      <ReSize />
     </div>
   );
 }

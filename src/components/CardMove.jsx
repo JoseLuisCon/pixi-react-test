@@ -4,15 +4,11 @@ import { Sprite } from "@inlet/react-pixi";
 
 import imagen from "../image1.png";
 
-let index = 1;
-let rotation = 0;
-
-
 export const CardMove = () => {
 
   const [state, setState] = useState(0);
 
-
+  const [imagenRef] = useState(imagen)
   const requestRef = useRef()
  
   //TODO => usar Hook useTick para la animación
@@ -30,7 +26,7 @@ export const CardMove = () => {
 
   return (
     <Sprite
-      image={imagen}
+      image={imagenRef}
       interactive
       x={550}
       y={320}
