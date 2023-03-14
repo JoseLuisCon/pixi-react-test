@@ -1,5 +1,5 @@
 import React, { Fragment, useRef } from "react";
-import { Graphics } from "@inlet/react-pixi";
+import { Graphics, unmountComponentAtNode } from "@inlet/react-pixi";
 
 import * as PIXI from "pixi.js";
 
@@ -32,18 +32,18 @@ export const VideoPixi = () => {
     if (container.getChildByName("video")) {
       
       const video = container.getChildByName("video");
-          
-      PIXI.Texture.removeFromCache(videotest)
-      container.removeChild(video);
-      video.destroy();
-    
+      
+      // //! Recarga de la fuente del video
+       PIXI.Texture.removeFromCache(videotest) //* Eliminamos el cache de la textura cargada
+       container.removeChild(video); //* Lo eliminamos del DOM
+       video.destroy(); //* Eliminamos el elemento del canvas
+     
       
     }
     
     const texture = PIXI.Texture.from(videotest);
     const videoSprite = new PIXI.Sprite(texture);
-    videoSprite.name="video"
-    
+    videoSprite.name="video";
     container.addChild(videoSprite);
 
 
@@ -59,6 +59,7 @@ export const VideoPixi = () => {
         ref={videoRef}
         cursor={"pointer"}
         position={[500,0]}
+        
       />
     </Fragment>
   );
