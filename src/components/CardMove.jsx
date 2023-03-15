@@ -14,7 +14,7 @@ export const CardMove = () => {
   // //TODO => usar Hook useTick para la animación??
    const animate = time => {
  
-     setState( (Math.cos(time/1000) || 0) * 0.3)
+   setState( (Math.cos(time/1000) || 0) * 0.3)
      requestRef.current = requestAnimationFrame(animate);
      
     }
@@ -27,14 +27,9 @@ export const CardMove = () => {
   return (
      <Sprite
        image={imagen}
-       interactive
-       x={550}
-       y={320}
-       scale={[0.2 + Math.abs(state),0.2+Math.abs( state)]}
-       rotation={state}
-       anchor={[0.2, 0.2]}
        cursor={'pointer'}
        name="tarjeta"
+       rotation={null}
      />
     
     );

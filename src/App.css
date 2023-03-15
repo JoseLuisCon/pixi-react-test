@@ -1,4 +1,13 @@
 .App {
+  width: 80vw;
+  height: 100vh;
   text-align: center;
+  display: flex;
 }
 
+.botones{
+  display:flex;
+  flex-direction: column;
+  background-color: aqua;
+
+}
