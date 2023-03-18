@@ -1,10 +1,13 @@
 
 import { Container, Graphics } from "@inlet/react-pixi";
-import React, { useCallback } from "react";
+import React, { useCallback, createRef, useEffect } from "react";
 
 import * as PIXI from 'pixi.js'
 import { VideoPixi } from "./VideoPixi";
-
+import { GsapTest2 } from "./GsapTest2";
+import { GsapAnimatedSprite } from "./GsapAnimatedSprite";
+import gsap from "gsap";
+import { ContainerEffect } from "./ContainerEffect";
 
 
 
@@ -24,11 +27,12 @@ export const ContainerMovible = ({position:{x, y}}) => {
     g.endFill();
   
   }, [x,y]);
-  
+    
   return (
     <Container sortableChildren={true} >
       <Graphics draw={draw} />
-      <VideoPixi position={{x,y}}/>
+      <VideoPixi position={{x,y}}/> 
+      <ContainerEffect position={{x,y}} />
     </Container>
   );
 };

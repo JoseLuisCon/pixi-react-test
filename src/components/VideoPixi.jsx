@@ -4,7 +4,7 @@ import { Container, Graphics, Sprite, unmountComponentAtNode } from "@inlet/reac
 import * as PIXI from "pixi.js";
 
 import videotest from '../bridder_logo_overlay_1.webm'
-import { JetSpriteAnimated } from "./AnimatedSprite";
+
 
 
 const draw = (g) => {
@@ -57,7 +57,7 @@ export const VideoPixi = ({position:{x , y}}) => {
 
   return (
     <Fragment >
-      <Container>
+      
         <Graphics
           draw={draw}
           interactive
@@ -67,8 +67,8 @@ export const VideoPixi = ({position:{x , y}}) => {
 
         > 
         </Graphics>
-        <JetSpriteAnimated position={{x, y}} ></JetSpriteAnimated>
-      </Container>
+       
+      
       
     </Fragment>
   );
