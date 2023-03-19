@@ -1,4 +1,4 @@
-import React, { useEffect, createRef,useState } from "react";
+import React, { useEffect, createRef,useState, useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 
 import { AnimatedSprite, useApp } from "@inlet/react-pixi";
@@ -13,6 +13,7 @@ export const GsapAnimatedSprite = () => {
   
   const [frames, setFrames] = useState([]);
   const app = useApp();
+  const animatedRef = useRef(null);
   
 
  useEffect( async () => {
@@ -25,11 +26,10 @@ export const GsapAnimatedSprite = () => {
         );
       });
       
-  
+      
     }, []);
   
 
-  
   
   
     if (frames.length === 0) {
@@ -39,13 +39,13 @@ export const GsapAnimatedSprite = () => {
 
   return (
       <AnimatedSprite
+      ref={animatedRef}
       animationSpeed={0.15}
       isPlaying={true}
       textures={frames}
       scale={(0.35,0.35)}
       anchor={0.5}
-      x={300}
-      y={200}
+      
     />
   );
 };

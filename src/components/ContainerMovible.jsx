@@ -1,14 +1,9 @@
 
 import { Container, Graphics } from "@inlet/react-pixi";
-import React, { useCallback, createRef, useEffect } from "react";
+import React, { useCallback } from "react";
 
-import * as PIXI from 'pixi.js'
 import { VideoPixi } from "./VideoPixi";
-import { GsapTest2 } from "./GsapTest2";
-import { GsapAnimatedSprite } from "./GsapAnimatedSprite";
-import gsap from "gsap";
 import { ContainerEffect } from "./ContainerEffect";
-
 
 
 const options = {
