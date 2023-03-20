@@ -1,11 +1,9 @@
 import React, { Fragment, useRef } from "react";
-import { Graphics, unmountComponentAtNode } from "@inlet/react-pixi";
+import { Graphics } from "@inlet/react-pixi";
 
 import * as PIXI from "pixi.js";
 
-
-import videotest from '../bridder_logo_overlay_1.webm'
-
+import videotest from "../bridder_logo_overlay_1.webm";
 
 const draw = (g) => {
   g.beginFill(0xefa7be);
@@ -19,47 +17,37 @@ const draw = (g) => {
 };
 
 export const VideoPixi = () => {
-  
   const videoRef = useRef(null);
 
-
   const playVideo = () => {
-    
-    
-    
     const container = videoRef.current.parent;
-    
+
     if (container.getChildByName("video")) {
-      
       const video = container.getChildByName("video");
-      
+
       // //! Recarga de la fuente del video
-       PIXI.Texture.removeFromCache(videotest) //* Eliminamos el cache de la textura cargada
-       container.removeChild(video); //* Lo eliminamos del DOM
-       video.destroy(); //* Eliminamos el elemento del canvas
-     
-      
+      PIXI.Texture.removeFromCache(videotest); //* Eliminamos el cache de la textura cargada
+      container.removeChild(video); //* Lo eliminamos del DOM
+      video.destroy(); //* Eliminamos el elemento del canvas
     }
-    
+
     const texture = PIXI.Texture.from(videotest);
     const videoSprite = new PIXI.Sprite(texture);
-    videoSprite.name="video";
+    videoSprite.scale = { x: 0.15, y: 0.15 };
+    videoSprite.position.x = 900;
+    videoSprite.name = "video";
     container.addChild(videoSprite);
-
-
-
-  }
+  };
 
   return (
-    <Fragment >
+    <Fragment>
       <Graphics
         draw={draw}
         interactive
         click={playVideo}
         ref={videoRef}
         cursor={"pointer"}
-        position={[500,0]}
-        
+        position={[20, 0]}
       />
     </Fragment>
   );
