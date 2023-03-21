@@ -24,7 +24,6 @@ export const VideoPixi = () => {
 
     if (container.getChildByName("video")) {
       const video = container.getChildByName("video");
-
       // //! Recarga de la fuente del video
       PIXI.Texture.removeFromCache(videotest); //* Eliminamos el cache de la textura cargada
       container.removeChild(video); //* Lo eliminamos del DOM

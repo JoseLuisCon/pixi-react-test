@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 
 import * as PIXI from "pixi.js";
 
-import { Container, AnimatedSprite, useApp, useTick } from "@inlet/react-pixi";
+import { AnimatedSprite, useApp } from "@inlet/react-pixi";
 
 // const spritesheet = "https://pixijs.io/examples/examples/assets/spritesheet/fighter.json";
 const spritesheet = "spritesheet.json";
 
-export const SpriteAnimated = ({ x, y, endAnimation }) => {
+export const SpriteAnimated = ({ x, y, endAnimation, setDestroy }) => {
   const [frames, setFrames] = useState([]);
 
   let animatedSpt = useRef();
@@ -29,12 +29,14 @@ export const SpriteAnimated = ({ x, y, endAnimation }) => {
     if (endAnimation) animatedSpt.current?.play();
   }, [endAnimation]);
 
+   
   if (frames.length === 0) {
     return null;
   }
 
   return (
     <AnimatedSprite
+     
       ref={animatedSpt}
       animationSpeed={0.25}
       scale={{ x: 0.35, y: 0.35 }}
@@ -45,7 +47,7 @@ export const SpriteAnimated = ({ x, y, endAnimation }) => {
       x={x}
       y={y}
       loop={false}
-      
+      onComplete={() => setDestroy(true)}
     />
   );
 };
