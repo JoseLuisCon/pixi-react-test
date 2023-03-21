@@ -4,14 +4,14 @@
   
 }
 
-.positionBomm{
+/* .positionBomm{
   width: 100%;
   height: 300px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
+} */
 
 .coordenadas{
   margin-top: 10px;

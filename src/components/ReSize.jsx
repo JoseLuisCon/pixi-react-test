@@ -1,11 +1,12 @@
 import { Container, Stage } from "@inlet/react-pixi";
 import { CardExplosion } from "./CardExplosion";
+import { Decks } from "./decks/Decks";
 
 import { VideoPixi } from "./VideoPixi";
 
 const getSize = () => ({
   width: window.innerWidth,
-  height: window.innerHeight - 300,
+  height: window.innerHeight,
 });
 
 const initialSize = getSize();
@@ -21,11 +22,13 @@ export const ReSize = ({ x, y }) => {
    /* COMPONENTE QUE SE ADAPTA AL TAMAÑO DE LA PANTALLA */
 
   return (
-    <Stage {...initialSize} options={options}>
+     <Stage {...initialSize} options={options}>
       <Container sortableChildren={true}>
-        <VideoPixi />
-        <CardExplosion x={900} y={300} /> 
+       {/*  <VideoPixi />
+        <CardExplosion x={900} y={300} />  */}
+        
+        <Decks></Decks>
       </Container>
-    </Stage>
+    </Stage> 
   );
 };

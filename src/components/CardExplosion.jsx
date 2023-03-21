@@ -3,8 +3,9 @@ import React, { useRef, useState } from "react";
 import { Container, Sprite, useTick } from "@inlet/react-pixi";
 
 import * as PIXI from "pixi.js";
-import carta from "../Carta_001.PNG";
+// import carta from "../assets/img/Carta_001.PNG";
 import { SpriteAnimated } from "./AnimatedSprite";
+const carta = "img/Carta_001.PNG"
 
 const texture = PIXI.Texture.from(carta);
 

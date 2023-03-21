@@ -14,11 +14,11 @@ function App() {
   return (
     <div className="App">
       {on && <ReSize x={x} y={y} display/>}
-      <div style={{ display: "block", margin: 10 }} className="positionBomm">
+     {/*  <div style={{ display: "block", margin: 10 }} className="positionBomm">
         <button onClick={() => setOn(true)}>Mostrar Canvas</button>
         <button onClick={() => setOn(false)}>Ocultar Canvas</button>
     
-      </div>
+      </div> */}
     </div>
   );
 }
