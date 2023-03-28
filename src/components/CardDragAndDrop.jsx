@@ -59,8 +59,8 @@ export const CardDragDrop = ({ x, y, ...props }) => {
       {...props}
       image={apple}
       interactive
-      scale={[0.2 + Math.abs(rot), 0.2 + Math.abs(rot)]}
-      rotation={rot}
+      // scale={[0.2 + Math.abs(rot), 0.2 + Math.abs(rot)]}
+      // rotation={rot}
       anchor={[0.2, 0.2]}
       cursor={"pointer"}
       name="tarjeta"

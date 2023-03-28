@@ -1,8 +1,10 @@
 import { Container, Stage } from "@inlet/react-pixi";
+import { CardDragDrop } from "./CardDragAndDrop";
 import { CardExplosion } from "./CardExplosion";
 import { Decks } from "./decks/Decks";
 
 import { VideoPixi } from "./VideoPixi";
+import { VideoPixiRedim } from "./VideoPixi copy";
 
 const getSize = () => ({
   width: window.innerWidth,
@@ -24,8 +26,9 @@ export const ReSize = ({ x, y }) => {
   return (
      <Stage {...initialSize} options={options}>
       <Container sortableChildren={true}>
-       {/*  <VideoPixi />
-        <CardExplosion x={900} y={300} />  */}
+        {/* <VideoPixi /> */}
+        {/* <VideoPixiRedim /> */}
+        {/* <CardExplosion x={900} y={300} />  */}
         
         <Decks></Decks>
       </Container>
