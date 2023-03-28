@@ -1,57 +1,18 @@
-import { Sprite, useApp, useTick } from "@inlet/react-pixi";
 import React, { useState, useRef, useEffect } from "react";
 
-const size = {
-  with: window.innerWidth / 2,
-  height: window.innerHeight / 2,
-};
+import { Sprite, useApp, useTick } from "@inlet/react-pixi";
 
-let initialData = [
-  {
-    id: 0,
-    name: "carta1",
-    img: "img/Carta_001.PNG",
-    x: size.with - 100,
-    y: size.height + 150,
-    rot: 15,
-    zIndex: 4,
-  },
-  {
-    id: 1,
-    name: "carta2",
-    img: "img/Carta_002.PNG",
-    x: size.with - 100,
-    y: size.height + 150,
-    rot: 0,
-    zIndex: 3,
-  },
-  {
-    id: 2,
-    name: "carta1",
-    img: "img/Carta_001.PNG",
-    x: size.with - 100,
-    y: size.height + 150,
-    rot: -15,
-    zIndex: 2,
-  },
-  {
-    id: 3,
-    name: "carta2",
-    img: "img/Carta_002.PNG",
-    x: size.with - 100,
-    y: size.height + 150,
-    rot: -30,
-    zIndex: 1,
-  },
-];
+import { initialData } from "./initialData";
+
+
+
 
 export const Decks = () => {
   const app = useApp();
-
   const [cartas, setCartas] = useState(initialData);
   const isDragging = useRef(false);
   const offset = useRef({ x: 0, y: 0 });
-  const [IndexCardSelect, setIndex] = useState(null);
+  const [IndexCardSelect, setCardIndex] = useState(null);
   const [InitialPosition, setPosition] = useState({ x: 0, y: 0 });
   const [rotation, setRotation] = useState(0);
   const [alpha, setAlpha] = useState(1);
@@ -59,15 +20,12 @@ export const Decks = () => {
 
   const onStart = (e) => {
     isDragging.current = true;
-
-    setIndex(e.target.id);
+    setCardIndex(e.target.id);
     offset.current = {
       x: e.data.global.x - cartas[e.target.id]?.x,
       y: e.data.global.y - cartas[e.target.id]?.y,
     };
-
     setPosition({ x: cartas[e.target.id].x, y: cartas[e.target.id].y });
-
     setZIndex(999);
   };
 
@@ -89,46 +47,85 @@ export const Decks = () => {
       Math.abs(InitialPosition.x - x) > 200
     ) {
       deleteCard();
-    } else {
-      x = InitialPosition.x;
-      y = InitialPosition.y;
-      cartas[IndexCardSelect] = { x, y, ...props };
+    } 
+    else {
+      effectReturnCarta() 
       setAlpha(1);
       setZIndex(cartas[IndexCardSelect]?.zIndex);
       setCartas([...cartas]);
     }
   };
 
+  const effectReturnCarta = ()=>{
+    
+    const xInitial = InitialPosition.x
+    const yInitial = InitialPosition.y
+       
+    const desplazamiento = setInterval(()=>{
+
+      if (cartas[IndexCardSelect].x !== xInitial || cartas[IndexCardSelect].y !== yInitial ){
+        let { x, y, ...props } = cartas[IndexCardSelect];
+
+        if (x !==xInitial){
+            (xInitial < x) 
+            ? x = cartas[IndexCardSelect].x - 1
+            : x = cartas[IndexCardSelect].x + 1
+          }
+        if (y !== yInitial){
+          (yInitial < y)
+            ? y = cartas[IndexCardSelect].y - 1
+            : y = cartas[IndexCardSelect].y + 1
+        }
+          cartas[IndexCardSelect] = {x, y, ...props}
+          setCartas([...cartas])
+          console.log(cartas[IndexCardSelect]);
+      }
+      else
+      {
+        clearInterval(desplazamiento)
+      }
+    },2)  
+ 
+    };
+
+  
+
   function onMove(e) {
     if (isDragging.current) {
       let { x, y, ...props } = cartas[IndexCardSelect];
 
-      x = e.data.global.x - offset.current.x;
-      y = e.data.global.y - offset.current.y;
+      x = Math.trunc(e.data.global.x - offset.current.x)
+      y = Math.trunc(e.data.global.y - offset.current.y)
 
       cartas[IndexCardSelect] = { x, y, ...props };
 
       setCartas([...cartas]);
-      if (
-        Math.abs(InitialPosition.y - cartas[IndexCardSelect].y) > 200 ||
-        Math.abs(InitialPosition.x - cartas[IndexCardSelect].x) > 200
-      ){
-        setAlpha(0.3)
-      }
-      else if (
-        Math.abs(InitialPosition.y - cartas[IndexCardSelect].y) > 100 ||
-        Math.abs(InitialPosition.x - cartas[IndexCardSelect].x) > 100
-      ){
-        setAlpha(0.7)
-      }else{
-        setAlpha(1);
-      }       
+
+      //* EFECTO DE DESVANECIMIENTO EN DOS PASOS
+      // if (
+      //   Math.abs(InitialPosition.y - cartas[IndexCardSelect].y) > 200 ||
+      //   Math.abs(InitialPosition.x - cartas[IndexCardSelect].x) > 200
+      // ){
+      //   setAlpha(0.3)
+      // }
+      // else if (
+      //   Math.abs(InitialPosition.y - cartas[IndexCardSelect].y) > 100 ||
+      //   Math.abs(InitialPosition.x - cartas[IndexCardSelect].x) > 100
+      // ){
+      //   setAlpha(0.7)
+      // }else{
+      //   setAlpha(1);
+      // }   
+      //* EFECTO DE DESVANECIMIENTO CUANDO SE ALEJA LA CARTA
+      setAlpha(1 - ((Math.abs(InitialPosition.y - cartas[IndexCardSelect].y))*.005))
+      setAlpha(1 - ((Math.abs(InitialPosition.x - cartas[IndexCardSelect].x))*.005))
+
+      console.log("x ",Math.abs(InitialPosition.x - cartas[IndexCardSelect].x),"y ",Math.abs(InitialPosition.y - cartas[IndexCardSelect].y));
+      
     }
   }
 
-  useTick((delta) => {
-    //  setRotation(i => i + 0.0001)
-  });
+ 
 
   return cartas.map((carta, index) => (
     <Sprite
