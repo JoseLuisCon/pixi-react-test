@@ -6,9 +6,9 @@ import { initialData } from "./initialData";
 
 import * as PIXI from "pixi.js";
 
-const carta = "img/Carta_001.PNG";
+const cartaImg = "img/Carta_001.PNG";
 
-const texture = PIXI.Texture.from(carta);
+const texture = PIXI.Texture.from(cartaImg);
 
 export const Decks = () => {
   const app = useApp();
@@ -17,21 +17,32 @@ export const Decks = () => {
   const offset = useRef({ x: 0, y: 0 });
   const [angleInitial, setAngleInitial] = useState(null);
   const [IndexCardSelect, setCardIndex] = useState(null);
-  const [InitialPosition, setPosition] = useState({ x: 0, y: 0 });
+  const [InitialPosition, setInitialPosition] = useState({ x: 0, y: 0 });
+  const [anchorCart, setAnchorCart] = useState({ x: 0.4, y: 0.8 })
   const [alpha, setAlpha] = useState(1);
   const [zIndex, setZIndex] = useState(0);
+  const FondoRef = useRef();
 
   const onStart = (e) => {
+    console.log("🚀 ~ file: Decks.jsx:26 ~ onStart ~ e:", e.data.global)
+    
     isDragging.current = true;
+    
     setCardIndex(e.target.id);
+
+    
     offset.current = {
       x: e.data.global.x - cartas[e.target.id]?.x,
       y: e.data.global.y - cartas[e.target.id]?.y,
     };
-    setPosition({ x: cartas[e.target.id].x, y: cartas[e.target.id].y });
+    
     setAngleInitial(cartas[e.target.id].rot);
-    let { rot, ...props } = cartas[e.target.id];
-    const newCart = { rot: 0, ...props };
+    
+    setInitialPosition({ x: cartas[e.target.id].x, y: cartas[e.target.id].y });
+    
+    setAnchorCart({x: 0.5, y:0.5})
+    let { x, y, rot, ...props } = cartas[e.target.id];
+    const newCart = { rot: 0, x:Math.trunc(e.data.global.x), y:Math.trunc(e.data.global.y), ...props };
     cartas[e.target.id] = newCart;
     setCartas([...cartas]);
 
@@ -43,7 +54,7 @@ export const Decks = () => {
     newArray = newArray.map(({ id, ...props }, index) => {
       return { id: index, ...props };
     });
-    setCartas([...newArray]);
+    setCartas(newArray);
   };
 
   const onEnd = () => {
@@ -52,13 +63,14 @@ export const Decks = () => {
     let { x, y, rot, ...props } = cartas[IndexCardSelect];
 
     if (
-      Math.abs(InitialPosition.y - y) > 200 ||
-      Math.abs(InitialPosition.x - x) > 200
+      Math.abs(InitialPosition.y - y) > 300 ||
+      Math.abs(InitialPosition.x - x) > 300
     ) {
       deleteCard();
     } else {
       const newCarta = { x, y, rot: angleInitial, ...props };
       cartas[IndexCardSelect] = newCarta;
+      setAnchorCart({ x: 0.4, y: 0.8 })
       effectReturnCarta();
       setAlpha(1);
       setZIndex(cartas[IndexCardSelect]?.zIndex);
@@ -103,11 +115,16 @@ export const Decks = () => {
   };
 
   function onMove(e) {
+  // console.log("🚀 ~ file: Decks.jsx:107 ~ onMove ~ e:", e)
+
+
+    
     if (isDragging.current) {
+      
       let { x, y, ...props } = cartas[IndexCardSelect];
 
-      x = Math.trunc(e.data.global.x - offset.current.x);
-      y = Math.trunc(e.data.global.y - offset.current.y);
+      x = Math.trunc(e.data.global.x);
+      y = Math.trunc(e.data.global.y);
 
       cartas[IndexCardSelect] = { x, y, ...props };
 
@@ -115,14 +132,14 @@ export const Decks = () => {
 
       //* EFECTO DE DESVANECIMIENTO EN DOS PASOS
        if (
-         Math.abs(InitialPosition.y - cartas[IndexCardSelect].y) > 200 ||
-         Math.abs(InitialPosition.x - cartas[IndexCardSelect].x) > 200
+         Math.abs(InitialPosition.y - cartas[IndexCardSelect].y) > 300 ||
+         Math.abs(InitialPosition.x - cartas[IndexCardSelect].x) > 300
        ){
          setAlpha(0.3)
        }
        else if (
-         Math.abs(InitialPosition.y - cartas[IndexCardSelect].y) > 100 ||
-         Math.abs(InitialPosition.x - cartas[IndexCardSelect].x) > 100
+         Math.abs(InitialPosition.y - cartas[IndexCardSelect].y) > 200 ||
+         Math.abs(InitialPosition.x - cartas[IndexCardSelect].x) > 200
        ){
          setAlpha(0.7)
        }else{
@@ -139,8 +156,10 @@ export const Decks = () => {
   }
 
   const setDistribution = (numCards) => {
-
-    let initialAngle = numCards === 1 ? 0 : numCards * 5;
+      
+    console.log("🚀 ~ file: Decks.jsx:143 ~ setDistribution ~ numCards:", numCards)
+      
+    let initialAngle = (numCards === 1) ? 0 : numCards * 5;
     let rotationProgress = initialAngle;
 
     const newCards = cartas.map((carta, index) => {
@@ -156,7 +175,7 @@ export const Decks = () => {
       return newCarta;
     });
     
-    setCartas(cartas => cartas = newCards)
+    setCartas(newCards)
   };
 
   useEffect(() => {
@@ -167,14 +186,15 @@ export const Decks = () => {
   }, []);
 
   return cartas.map((carta, index) => (
-    
+    <>
       <Sprite
+        ref={FondoRef}
         id={carta.id}
         key={index}
         image={carta.img}
         interactive
         scale={0.5}
-        anchor={{ x: 0.4, y: 0.8 }}
+        anchor={IndexCardSelect == carta.id ? anchorCart : { x: 0.4, y: 0.8 }}
         // width={540}
         // height={800}
         angle={carta.rot}
@@ -187,13 +207,19 @@ export const Decks = () => {
         pointerup={onEnd}
         pointerupoutside={onEnd}
         pointermove={onMove}
-      >
-        {/* <Sprite 
-          texture={texture}
-          scale={0.5}
-          
-        /> */}
-      </Sprite>
+      />
+      {/* <Sprite
+        image={cartaImg}
+        scale={0.4}
+        key={"Carta-"+carta.id}
+        anchor={{ x: 0.4, y: 0.8 }}
+        position={{ x: cartas[carta.id].x+20, y: cartas[carta.id].y-30 }}
+        zIndex={(IndexCardSelect == carta.id ? zIndex : cartas[carta.id].zIndex)+1}
+        angle={carta.rot}
+      /> */}
+      
+    </>
+      
     
   ));
 };
