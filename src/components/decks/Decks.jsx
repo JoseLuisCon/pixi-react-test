@@ -15,7 +15,6 @@ export const Decks = () => {
   const [cartas, setCartas] = useState(initialData);
   const isDragging = useRef(false);
   const offset = useRef({ x: 0, y: 0 });
-  const angleInitialRef = useRef();
   const [angleInitial, setAngleInitial] = useState(null);
   const [IndexCardSelect, setCardIndex] = useState(null);
   const [InitialPosition, setPosition] = useState({ x: 0, y: 0 });
@@ -100,6 +99,7 @@ export const Decks = () => {
         clearInterval(desplazamiento);
       }
     }, 2);
+    
   };
 
   function onMove(e) {
@@ -114,31 +114,32 @@ export const Decks = () => {
       setCartas([...cartas]);
 
       //* EFECTO DE DESVANECIMIENTO EN DOS PASOS
-      // if (
-      //   Math.abs(InitialPosition.y - cartas[IndexCardSelect].y) > 200 ||
-      //   Math.abs(InitialPosition.x - cartas[IndexCardSelect].x) > 200
-      // ){
-      //   setAlpha(0.3)
-      // }
-      // else if (
-      //   Math.abs(InitialPosition.y - cartas[IndexCardSelect].y) > 100 ||
-      //   Math.abs(InitialPosition.x - cartas[IndexCardSelect].x) > 100
-      // ){
-      //   setAlpha(0.7)
-      // }else{
-      //   setAlpha(1);
-      // }
+       if (
+         Math.abs(InitialPosition.y - cartas[IndexCardSelect].y) > 200 ||
+         Math.abs(InitialPosition.x - cartas[IndexCardSelect].x) > 200
+       ){
+         setAlpha(0.3)
+       }
+       else if (
+         Math.abs(InitialPosition.y - cartas[IndexCardSelect].y) > 100 ||
+         Math.abs(InitialPosition.x - cartas[IndexCardSelect].x) > 100
+       ){
+         setAlpha(0.7)
+       }else{
+         setAlpha(1);
+       }
       //* EFECTO DE DESVANECIMIENTO CUANDO SE ALEJA LA CARTA
-      setAlpha(
-        1 - Math.abs(InitialPosition.y - cartas[IndexCardSelect].y) * 0.006
-      );
-      setAlpha(
-        1 - Math.abs(InitialPosition.x - cartas[IndexCardSelect].x) * 0.006
-      );
+      // setAlpha(
+      //   1 - Math.abs(InitialPosition.y - cartas[IndexCardSelect].y) * 0.006 || 1 - Math.abs(InitialPosition.x - cartas[IndexCardSelect].x) * 0.006
+      // );
+      // setAlpha(
+      //   1 - Math.abs(InitialPosition.x - cartas[IndexCardSelect].x) * 0.006
+      // );
     }
   }
 
   const setDistribution = (numCards) => {
+
     let initialAngle = numCards === 1 ? 0 : numCards * 5;
     let rotationProgress = initialAngle;
 
@@ -147,23 +148,22 @@ export const Decks = () => {
       if (index === 0) {
         rot = initialAngle;
       } else {
-        rotationProgress = rotationProgress - 15;
+        rotationProgress += (-10);
         rot = rotationProgress;
       }
       zIndex = numCards - index;
       const newCarta = { rot, zIndex, ...props };
       return newCarta;
     });
-
-    console.log(newCards);
-    return newCards;
+    
+    setCartas(cartas => cartas = newCards)
   };
 
   useEffect(() => {
-    setCartas(setDistribution(cartas.length));
+    setDistribution(cartas.length);
   }, [cartas.length]);
   useEffect(() => {
-    setCartas(setDistribution(cartas.length));
+    setDistribution(cartas.length);
   }, []);
 
   return cartas.map((carta, index) => (
