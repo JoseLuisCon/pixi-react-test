@@ -18,80 +18,74 @@ export const Decks = () => {
   const angleInitial = useRef(null);
   const isDragging = useRef(false);
   const indexCardSelect = useRef(null);
-  const initialPosition = useRef({x: 0, y: 0})
+  const initialPosition = useRef({ x: 0, y: 0 });
   const alpha = useRef(1);
- 
 
   const onStart = (e) => {
-
     console.log("onStart", cartas);
     isDragging.current = true;
 
-    indexCardSelect.current = e.target.id;    
-    angleInitial.current=cartas[e.target.id].rot;
-    initialPosition.current = {x: cartas[e.target.id].x, y: cartas[e.target.id].y}
-    
+    indexCardSelect.current = e.target.id;
+    angleInitial.current = cartas[e.target.id].rot;
+    initialPosition.current = {
+      x: cartas[e.target.id].x,
+      y: cartas[e.target.id].y,
+    };
+
     let { x, y, rot, anchor, ...props } = cartas[indexCardSelect.current];
     const newCart = {
       rot: 0,
       x: Math.trunc(e.data.global.x),
       y: Math.trunc(e.data.global.y),
       anchor: 0.5,
-      ...props
+      ...props,
     };
-    
-    cartas[indexCardSelect.current] = {...newCart};
+
+    cartas[indexCardSelect.current] = { ...newCart };
     setCartas([...cartas]);
     setZIndex(999);
-   
   };
 
-
-
   const deleteCard = () => {
-    
-    let newArray = cartas.filter((carta) => carta.id !== indexCardSelect.current);
-    
-    newArray = newArray.map(({ id,  ...props }, index) => {
-        const newCart = { id: index,  ...props}
-      return { ...newCart }
-      }
-      );
+    let newArray = cartas.filter(
+      (carta) => carta.id !== indexCardSelect.current
+    );
+
+    newArray = newArray.map(({ id, ...props }, index) => {
+      const newCart = { id: index, ...props };
+      return { ...newCart };
+    });
     setCartas([...newArray]);
   };
 
   const onEnd = () => {
-
-
-    console.log("onEnd",cartas);
+    console.log("onEnd", cartas);
     isDragging.current = false;
 
-    let { x, y, rot, anchor, ...props } = cartas[indexCardSelect.current];
-    let desplazY = (Math.abs(initialPosition.current.y - y))
-    let desplazX = (Math.abs(initialPosition.current.x - x))
-    
+    let { rot, anchor, ...props } = cartas[indexCardSelect.current];
+    // let desplazY = (Math.abs(initialPosition.current.y - y))
+    // let desplazX = (Math.abs(initialPosition.current.x - x))
+
     if (
-       Math.abs(initialPosition.current.y - y) > 300 ||
-       Math.abs(initialPosition.current.x - x) > 300
-       
-       ) {
-      console.log("🚀 ~ file: Decks.jsx:69 ~ onEnd ~ initialPosition.current:", initialPosition.current)
+      Math.abs(initialPosition.current.y - cartas[indexCardSelect.current].y) >
+        300 ||
+      Math.abs(initialPosition.current.x - cartas[indexCardSelect.current].x) >
+        300
+    ) {
       //effectDisaperCard();
       deleteCard();
     } else {
-      
-      if (desplazX && desplazY){
+      const newCarta = {
+        rot: angleInitial.current,
+        anchor: { x: 0.4, y: 0.8 },
+        ...props,
+      };
+      cartas[indexCardSelect.current] = newCarta;
+      setCartas([...cartas]);
+      effectReturnCarta();
+      alpha.current = 1;
 
-        console.log("🚀 ~ file: Decks.jsx:69 ~ onEnd ~ initialPosition.current:", initialPosition.current)
-        const newCarta = { x, y, rot: angleInitial.current, anchor: { x: 0.4, y: 0.8 }, ...props };
-        cartas[indexCardSelect.current] = {...newCarta};
-        setCartas([...cartas]);
-        effectReturnCarta();
-        alpha.current= 1;
-      
-        setZIndex(cartas[indexCardSelect.current]?.zIndex);
-      }
-      
+      setZIndex(cartas[indexCardSelect.current]?.zIndex);
     }
   };
 
@@ -106,14 +100,16 @@ export const Decks = () => {
 
       .easing(TWEEN.Easing.Elastic.Out)
       .onUpdate(({ x, y }) => {
-        cartas[indexCardSelect.current] = { x: Math.trunc(x) , y: Math.trunc(y), ...props };
+        cartas[indexCardSelect.current] = {
+          x: Math.trunc(x),
+          y: Math.trunc(y),
+          ...props,
+        };
 
         setCartas([...cartas]);
       })
       .start(); // Start the tween immediately.
   };
-
-
 
   const effectReturnCarta = () => {
     initReturn();
@@ -127,8 +123,6 @@ export const Decks = () => {
   function onMove(e) {
     // console.log("🚀 ~ file: Decks.jsx:107 ~ onMove ~ e:", e)
     if (isDragging.current) {
-      
-      
       let { x, y, ...props } = cartas[indexCardSelect.current];
       x = Math.trunc(e.data.global.x);
       y = Math.trunc(e.data.global.y);
@@ -138,20 +132,27 @@ export const Decks = () => {
       setCartas([...cartas]);
 
       // //* EFECTO DE DESVANECIMIENTO EN DOS PASOS
-        if (
-          Math.abs(initialPosition.current.y - cartas[indexCardSelect.current].y) > 300 ||
-          Math.abs(initialPosition.current.x - cartas[indexCardSelect.current].x) > 300
-        ){
-          alpha.current=0.3;
-        }
-        else if (
-          Math.abs(initialPosition.current.y - cartas[indexCardSelect.current].y) > 200 ||
-          Math.abs(initialPosition.current.x - cartas[indexCardSelect.current].x) > 200
-        ){
-          alpha.current=0.7;
-        }else{
-          alpha.current=1;
-        }
+      if (
+        Math.abs(
+          initialPosition.current.y - cartas[indexCardSelect.current].y
+        ) > 300 ||
+        Math.abs(
+          initialPosition.current.x - cartas[indexCardSelect.current].x
+        ) > 300
+      ) {
+        alpha.current = 0.3;
+      } else if (
+        Math.abs(
+          initialPosition.current.y - cartas[indexCardSelect.current].y
+        ) > 200 ||
+        Math.abs(
+          initialPosition.current.x - cartas[indexCardSelect.current].x
+        ) > 200
+      ) {
+        alpha.current = 0.7;
+      } else {
+        alpha.current = 1;
+      }
       //* EFECTO DE DESVANECIMIENTO CUANDO SE ALEJA LA CARTA
       // setAlpha(
       //   1 - Math.abs(InitialPosition.y - cartas[IndexCardSelect.current].y) * 0.006 || 1 - Math.abs(InitialPosition.x - cartas[IndexCardSelect.current].x) * 0.006
@@ -202,7 +203,7 @@ export const Decks = () => {
         image={carta.img}
         interactive
         scale={0.5}
-        anchor={ carta.anchor }
+        anchor={carta.anchor}
         // width={540}
         // height={800}
         angle={carta.rot}
@@ -210,21 +211,14 @@ export const Decks = () => {
         name={carta.name}
         alpha={indexCardSelect.current == carta.id ? alpha.current : 1}
         position={{ x: cartas[carta.id].x, y: cartas[carta.id].y }}
-        zIndex={indexCardSelect.current == carta.id ? zIndex : cartas[carta.id].zIndex}
+        zIndex={
+          indexCardSelect.current == carta.id ? zIndex : cartas[carta.id].zIndex
+        }
         pointerdown={onStart}
         pointerup={onEnd}
         pointerupoutside={onEnd}
         pointermove={onMove}
       />
-      {/* <Sprite
-        image={cartaImg}
-        scale={0.4}
-        key={"Carta-"+carta.id}
-        anchor={{ x: 0.4, y: 0.8 }}
-        position={{ x: cartas[carta.id].x+20, y: cartas[carta.id].y-30 }}
-        zIndex={(IndexCardSelect.current == carta.id ? zIndex : cartas[carta.id].zIndex)+1}
-        angle={carta.rot}
-      /> */}
     </>
   ));
 };

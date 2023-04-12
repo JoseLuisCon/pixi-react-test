@@ -3,9 +3,12 @@ import { CardDragDrop } from "./CardDragAndDrop";
 import { CardExplosion } from "./CardExplosion";
 import { CardTween } from "./CardTween";
 import { Decks } from "./decks/Decks";
+import { Decks2 } from "./decks/Decks2";
 
 import { VideoPixi } from "./VideoPixi";
 import { VideoPixiRedim } from "./VideoPixi copy";
+import { Baraja } from "./baraja/Baraja";
+
 
 const getSize = () => ({
   width: window.innerWidth,
@@ -25,15 +28,18 @@ export const ReSize = ({ x, y }) => {
    /* COMPONENTE QUE SE ADAPTA AL TAMAÑO DE LA PANTALLA */
 
   return (
-     <Stage {...initialSize} options={options}>
-      <Container sortableChildren={true} >
-        {/* <VideoPixi /> */}
-        {/* <VideoPixiRedim /> */}
-        {/* <CardExplosion x={900} y={300} />  */}
+    
+      <Stage {...initialSize} options={options}>
+       <Container sortableChildren={true} >
+         {/* <VideoPixi /> */}
+         {/* <VideoPixiRedim /> */}
+         {/* <CardExplosion x={900} y={300} />  */}
         
-       <Decks /> 
-       {/* <CardTween /> */}
-      </Container>
-    </Stage> 
+       {/*  <Baraja />  */}
+        {/* <CardTween /> */}
+        {/* <Decks/> */}
+          <Baraja />
+       </Container>
+     </Stage> 
   );
 };
