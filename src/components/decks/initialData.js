@@ -8,8 +8,7 @@ export const initialData = [
   {
     id: 0,
     img: "img/Carta_01.png",
-    x: size.with - 100,
-    y: size.height + 150,
+    scale: {x:0.5,y:0.5},
     rot: 0,
     zIndex: 0,
     anchor: {x:0.4, y:0.8}
@@ -17,8 +16,7 @@ export const initialData = [
    {
      id: 1,
      img: "img/Carta_02.png",
-     x: size.with - 100,
-     y: size.height + 150,
+     scale: {x:0.5,y:0.5},
      rot: 0,
      zIndex: 0,
      anchor: {x:0.4, y:0.8}
@@ -26,8 +24,7 @@ export const initialData = [
     {
       id: 2,
       img: "img/Carta_03.png",
-      x: size.with - 100,
-      y: size.height + 150,
+      scale: {x:0.5,y:0.5},
       rot: 0,
       zIndex: 0,
       anchor: {x:0.4, y:0.8}
@@ -36,8 +33,7 @@ export const initialData = [
       id: 3,
      
       img: "img/Carta_04.png",
-      x: size.with - 100,
-      y: size.height + 150,
+      scale: {x:0.5,y:0.5},
       rot: 0,
       zIndex:0,
       anchor: {x:0.4, y:0.8}
@@ -46,8 +42,7 @@ export const initialData = [
        id: 4,
       
        img: "img/Carta_05.png",
-       x: size.with - 100,
-       y: size.height + 150,
+       scale: {x:0.5,y:0.5},
        rot: 0,
        zIndex: 3,
        anchor: {x:0.4, y:0.8}
