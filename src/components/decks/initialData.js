@@ -11,7 +11,8 @@ export const initialData = [
     scale: {x:0.5,y:0.5},
     rot: 0,
     zIndex: 0,
-    anchor: {x:0.4, y:0.8}
+    anchor: {x:0.4, y:0.8},
+    select:false
   },
    {
      id: 1,
@@ -19,7 +20,8 @@ export const initialData = [
      scale: {x:0.5,y:0.5},
      rot: 0,
      zIndex: 0,
-     anchor: {x:0.4, y:0.8}
+     anchor: {x:0.4, y:0.8},
+     select:false
    },
     {
       id: 2,
@@ -27,7 +29,8 @@ export const initialData = [
       scale: {x:0.5,y:0.5},
       rot: 0,
       zIndex: 0,
-      anchor: {x:0.4, y:0.8}
+      anchor: {x:0.4, y:0.8},
+      select:false
     },
     {
       id: 3,
@@ -36,7 +39,8 @@ export const initialData = [
       scale: {x:0.5,y:0.5},
       rot: 0,
       zIndex:0,
-      anchor: {x:0.4, y:0.8}
+      anchor: {x:0.4, y:0.8},
+      select:false
     },
      {
        id: 4,
@@ -45,28 +49,56 @@ export const initialData = [
        scale: {x:0.5,y:0.5},
        rot: 0,
        zIndex: 3,
-       anchor: {x:0.4, y:0.8}
+       anchor: {x:0.4, y:0.8},
+       select:false
      },
-  //  {
-  //    id: 5,
-  //    name: "carta1",
-  //    img: "img/rango_carta_rosa.png",
-  //    x: size.with - 100,
-  //    y: size.height + 150,
-  //    rot: 0,
-  //    zIndex: 2,
-  //    anchor: {x:0.4, y:0.8}
-  //  },
-  //  {
-  //    id: 6,
-  //    name: "carta2",
-  //    img: "img/rango_carta_amarilla.png",
-  //    x: size.with - 100,
-  //    y: size.height + 150,
-  //    rot: 0,
-  //    zIndex: 1,
-  //    anchor: {x:0.4, y:0.8}
-  //  },
+     {
+      id: 5,
+      img: "img/Carta_06.png",
+      scale: {x:0.5,y:0.5},
+      rot: 0,
+      zIndex: 0,
+      anchor: {x:0.4, y:0.8},
+      select:false
+    },
+     {
+       id: 6,
+       img: "img/Carta_07.png",
+       scale: {x:0.5,y:0.5},
+       rot: 0,
+       zIndex: 0,
+       anchor: {x:0.4, y:0.8},
+       select:false
+     },
+      {
+        id: 7,
+        img: "img/Carta_08.png",
+        scale: {x:0.5,y:0.5},
+        rot: 0,
+        zIndex: 0,
+        anchor: {x:0.4, y:0.8},
+        select:false
+      },
+      {
+        id: 8,
+       
+        img: "img/Carta_09.png",
+        scale: {x:0.5,y:0.5},
+        rot: 0,
+        zIndex:0,
+        anchor: {x:0.4, y:0.8},
+        select:false
+      },
+       {
+         id: 9,
+        
+         img: "img/Carta_10.png",
+         scale: {x:0.5,y:0.5},
+         rot: 0,
+         zIndex: 0,
+         anchor: {x:0.4, y:0.8},
+         select:false
+       },
 ];
   
    
