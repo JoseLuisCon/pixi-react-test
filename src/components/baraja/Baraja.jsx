@@ -319,9 +319,9 @@ export const Baraja = ({pos}) => {
             
           setCartasSprite(newArray);
           const removeSprite = app.stage.getChildByName(referenciaSprite.current?.name, true);
-          removeSprite.parent?.removeChild(removeSprite);
-          
-          
+          const container = removeSprite?.parent;
+          container?.removeChild(removeSprite);
+          console.log("🚀 ~ file: Baraja.jsx:345 ~ useEffect ~ removeSprite:", removeSprite?.name)
         }
       }
     } else {
@@ -341,7 +341,7 @@ export const Baraja = ({pos}) => {
   useEffect(() => {
     if (cartasSprite.length !== 0) {
       render(<Text text={`Número de cartas ${cartasSprite.length}`} y={0} />, app.stage );
-
+      
     }
   }, [cartasSprite.length])
 
@@ -368,7 +368,7 @@ export const Baraja = ({pos}) => {
             cursor="pointer"
             pointerdown={onStart}
             pointerup={onEnd}
-            pointerupoutside={onEnd}
+            // pointerupoutside={onEnd}
             pointermove={onMove}
             name={"carta"+id}
           />
