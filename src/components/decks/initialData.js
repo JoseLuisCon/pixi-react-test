@@ -3,6 +3,7 @@ const size = {
   height: Math.trunc(window.innerHeight / 2),
 };
 
+/// El id tiene que coincidir con el index del array, por lo que deberán ser cargadas con el id en el orden que se quieren mostrar
 
 export const initialData = [
   {
