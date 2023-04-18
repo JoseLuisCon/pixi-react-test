@@ -107,6 +107,8 @@ export const Baraja = ({pos}) => {
 
     newCartasSprite = [...cardsLeft, newCartasSprite[idCarta], ...cardsRight];
 
+    alpha.current = 1;
+    
     return [...newCartasSprite];
   };
 
@@ -305,7 +307,6 @@ export const Baraja = ({pos}) => {
           setCartasSprite(
             showSelectedCard(chekMaxId, newArrayCartasRedistribuidas)
           );
-          console.log("🚀 ~ file: Baraja.jsx:311 ~ onEnd ~ newArrayCartasRedistribuidas:", newArrayCartasRedistribuidas)
         } else {
 
           // Si no es la última carta del array, seleccionamos la carta con el mismo id que la que se ha eliminado    
@@ -315,10 +316,12 @@ export const Baraja = ({pos}) => {
             initialProps.current.id,
             newArrayCartasRedistribuidas
           )
-          setCartasSprite(
-            newArray
-            );
-            console.log("🚀 ~ file: Baraja.jsx:306 ~ onEnd ~ newArray:", newArray)
+            
+          setCartasSprite(newArray);
+          const removeSprite = app.stage.getChildByName(referenciaSprite.current?.name, true);
+          removeSprite.parent?.removeChild(removeSprite);
+          
+          
         }
       }
     } else {
@@ -367,6 +370,7 @@ export const Baraja = ({pos}) => {
             pointerup={onEnd}
             pointerupoutside={onEnd}
             pointermove={onMove}
+            name={"carta"+id}
           />
         )
       )}
