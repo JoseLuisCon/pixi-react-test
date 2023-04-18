@@ -15,15 +15,15 @@ export const Baraja = () => {
   const positionPointer = useRef({ x: 0, y: 0 });
   const alpha = useRef(1);
 
-  const reDistribution = ({ x, y }) => {
+  const reDistribution = ({ x, y }, arrayIn) => {
     let xBar = x;
     let yBar = y;
 
     let initialAngle =
-      cartasSprite.length === 1 ? 0 : Math.trunc(cartasSprite.length / 2) * -2;
+    arrayIn.length === 1 ? 0 : Math.trunc(arrayIn.length / 2) * -2;
     let angle = initialAngle;
 
-    const newCartasSprite = cartasSprite.map((carta, index) => {
+    const newCartasSprite = arrayIn.map((carta, index) => {
       const { rot, anchor, x, y, ...rest } = carta;
 
       if (index === 0) {
@@ -41,7 +41,7 @@ export const Baraja = () => {
       };
     });
 
-    setCartasSprite(newCartasSprite);
+    return(newCartasSprite);
   };
 
   const showSelectedCard = (idCarta = 0, arraySprite) => {
@@ -54,7 +54,7 @@ export const Baraja = () => {
     let newCartasSprite = arraySprite.slice();
 
     newCartasSprite[idCarta].select = true;
-    newCartasSprite[idCarta].zIndex = cartasSprite.length;
+    newCartasSprite[idCarta].zIndex = newCartasSprite.length;
 
     // A ambos lados se situan con un Zindex decreciente
     const zIndexMax = newCartasSprite.length;
@@ -102,25 +102,25 @@ export const Baraja = () => {
   };
 
   const deleteCard = () => {
-    if (cartasSprite.length === 1) {
-      setCartasSprite([]);
-    } else {
-      let newCartasSprite = cartasSprite.filter(
-        (carta) => carta.id !== initialProps.current.id
-      );
+    // if (cartasSprite.length === 1) {
+    //   setCartasSprite([]);
+    // } else {
+    //   let newCartasSprite = cartasSprite.filter(
+    //     (carta) => carta.id !== initialProps.current.id
+    //   );
       
-      newCartasSprite = newCartasSprite.map(
-         ({ id,  ...props }, index) => {
-           const newCart = { id: index, ...props };
-           return newCart;
-         }
-       );
+    //   newCartasSprite = newCartasSprite.map(
+    //      ({ id,  ...props }, index) => {
+    //        const newCart = { id: index, ...props };
+    //        return newCart;
+    //      }
+    //    );
 
        
 
-      setCartasSprite(newCartasSprite);
+    //   setCartasSprite(newCartasSprite);
      
-    }
+    // }
   };
 
   //* ====================================  EFECTO RETORNO CON LIBRERÍA TWEEN ====================
@@ -279,34 +279,55 @@ export const Baraja = () => {
         initialProps.current?.x - cartasSprite[initialProps.current?.id].x
       ) > 300
     ) {
-      deleteCard();
+      // DELETING CARDS
+      console.log(" 🌕 borrando");
+      if (cartasSprite.length === 1) {
+           setCartasSprite([]);
+         } else {
+            
+           console.log("🚀 ~ file: Baraja.jsx:291 ~ onEnd ~ cartasSprite:", cartasSprite)
+           let newCartasSprite = cartasSprite.filter(
+             (carta) => carta.id !== initialProps.current.id 
+           );
+           console.log("🚀 ~ file: Baraja.jsx:289 ~ onEnd ~ newCartasSprite:", newCartasSprite)
+          
+           newCartasSprite = newCartasSprite.map(
+              ({ id,  ...props }, index) => {
+                const newCart = { id: index, ...props };
+                return newCart;
+              }
+            );
+          
+          const newArrayCartasRedistribuidas = reDistribution({x:400, y:500}, newCartasSprite) 
+          
+          const chekMaxId = newArrayCartasRedistribuidas[newArrayCartasRedistribuidas.length - 1].id;
+          if (chekMaxId === initialProps.current.id-1) {
+            setCartasSprite(showSelectedCard(chekMaxId, newArrayCartasRedistribuidas));
+          } else {
+           
+            setCartasSprite(showSelectedCard(initialProps.current?.id, newArrayCartasRedistribuidas));
+          }
+    
+        
+        }
       
-      // setCartasSprite(showSelectedCard(initialProps.current?.id, cartasSprite));
-      //  reDistribution({ x: 400, y: 500 });
+  
     } else {
       effectReturnCarta();
     }
     
-    console.log("🚀 ~ file: Baraja.jsx:286 ~ onEnd ~ cartasSprite:", cartasSprite)
     alpha.current = 1;
   };
 
   useEffect(() => {
     if (cartasSprite.length !== 0) {
-      const newArray = showSelectedCard(0, cartasSprite);
-      setCartasSprite(newArray);
-      reDistribution({ x: 400, y: 500 });
+      const newArray = reDistribution({ x: 400, y: 500 }, cartasSprite);
+      setCartasSprite(showSelectedCard(0, newArray));
+      
     }
   }, []);
 
-    useEffect(() => {
-
-      if (cartasSprite.length !== 0 && initialProps.current?.id !== undefined) {
-        reDistribution({ x: 400, y: 500 });
-      }
-
-    }, [cartasSprite.length]);
-
+  
   return (
     <>
       {cartasSprite.map(
