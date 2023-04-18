@@ -38,7 +38,7 @@ export const ReSize = ({ x, y }) => {
        {/*  <Baraja />  */}
         {/* <CardTween /> */}
         {/* <Decks/> */}
-          <Baraja />
+          <Baraja pos={{x:300, y:400}}/>
        </Container>
      </Stage> 
   );

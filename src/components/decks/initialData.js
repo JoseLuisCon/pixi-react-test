@@ -3,75 +3,103 @@ const size = {
   height: Math.trunc(window.innerHeight / 2),
 };
 
+/// El id tiene que coincidir con el index del array, por lo que deberán ser cargadas con el id en el orden que se quieren mostrar
 
 export const initialData = [
   {
     id: 0,
     img: "img/Carta_01.png",
-    x: size.with - 100,
-    y: size.height + 150,
+    scale: {x:0.25,y:0.25},
     rot: 0,
     zIndex: 0,
-    anchor: {x:0.4, y:0.8}
+    anchor: {x:0.4, y:0.8},
+    select:false
   },
    {
      id: 1,
      img: "img/Carta_02.png",
-     x: size.with - 100,
-     y: size.height + 150,
+     scale: {x:0.25,y:0.25},
      rot: 0,
      zIndex: 0,
-     anchor: {x:0.4, y:0.8}
+     anchor: {x:0.4, y:0.8},
+     select:false
    },
     {
       id: 2,
       img: "img/Carta_03.png",
-      x: size.with - 100,
-      y: size.height + 150,
+      scale: {x:0.25,y:0.25},
       rot: 0,
       zIndex: 0,
-      anchor: {x:0.4, y:0.8}
+      anchor: {x:0.4, y:0.8},
+      select:false
     },
     {
       id: 3,
      
       img: "img/Carta_04.png",
-      x: size.with - 100,
-      y: size.height + 150,
+      scale: {x:0.25,y:0.25},
       rot: 0,
       zIndex:0,
-      anchor: {x:0.4, y:0.8}
+      anchor: {x:0.4, y:0.8},
+      select:false
     },
      {
        id: 4,
       
        img: "img/Carta_05.png",
-       x: size.with - 100,
-       y: size.height + 150,
+       scale: {x:0.25,y:0.25},
        rot: 0,
        zIndex: 3,
-       anchor: {x:0.4, y:0.8}
+       anchor: {x:0.4, y:0.8},
+       select:false
      },
-  //  {
-  //    id: 5,
-  //    name: "carta1",
-  //    img: "img/rango_carta_rosa.png",
-  //    x: size.with - 100,
-  //    y: size.height + 150,
-  //    rot: 0,
-  //    zIndex: 2,
-  //    anchor: {x:0.4, y:0.8}
-  //  },
-  //  {
-  //    id: 6,
-  //    name: "carta2",
-  //    img: "img/rango_carta_amarilla.png",
-  //    x: size.with - 100,
-  //    y: size.height + 150,
-  //    rot: 0,
-  //    zIndex: 1,
-  //    anchor: {x:0.4, y:0.8}
-  //  },
+     {
+      id: 5,
+      img: "img/Carta_06.png",
+      scale: {x:0.25,y:0.25},
+      rot: 0,
+      zIndex: 0,
+      anchor: {x:0.4, y:0.8},
+      select:false
+    },
+     {
+       id: 6,
+       img: "img/Carta_07.png",
+       scale: {x:0.25,y:0.25},
+       rot: 0,
+       zIndex: 0,
+       anchor: {x:0.4, y:0.8},
+       select:false
+     },
+      {
+        id: 7,
+        img: "img/Carta_08.png",
+        scale: {x:0.25,y:0.25},
+        rot: 0,
+        zIndex: 0,
+        anchor: {x:0.4, y:0.8},
+        select:false
+      },
+      {
+        id: 8,
+       
+        img: "img/Carta_09.png",
+        scale: {x:0.25,y:0.25},
+        rot: 0,
+        zIndex:0,
+        anchor: {x:0.4, y:0.8},
+        select:false
+      },
+       {
+         id: 9,
+        
+         img: "img/Carta_10.png",
+         scale: {x:0.25,y:0.25},
+         rot: 0,
+         zIndex: 0,
+         anchor: {x:0.4, y:0.8},
+         select:false
+       },
 ];
   
    
