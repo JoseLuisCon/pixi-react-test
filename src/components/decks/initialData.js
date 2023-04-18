@@ -9,7 +9,7 @@ export const initialData = [
   {
     id: 0,
     img: "img/Carta_01.png",
-    scale: {x:0.5,y:0.5},
+    scale: {x:0.25,y:0.25},
     rot: 0,
     zIndex: 0,
     anchor: {x:0.4, y:0.8},
@@ -18,7 +18,7 @@ export const initialData = [
    {
      id: 1,
      img: "img/Carta_02.png",
-     scale: {x:0.5,y:0.5},
+     scale: {x:0.25,y:0.25},
      rot: 0,
      zIndex: 0,
      anchor: {x:0.4, y:0.8},
@@ -27,7 +27,7 @@ export const initialData = [
     {
       id: 2,
       img: "img/Carta_03.png",
-      scale: {x:0.5,y:0.5},
+      scale: {x:0.25,y:0.25},
       rot: 0,
       zIndex: 0,
       anchor: {x:0.4, y:0.8},
@@ -37,7 +37,7 @@ export const initialData = [
       id: 3,
      
       img: "img/Carta_04.png",
-      scale: {x:0.5,y:0.5},
+      scale: {x:0.25,y:0.25},
       rot: 0,
       zIndex:0,
       anchor: {x:0.4, y:0.8},
@@ -47,7 +47,7 @@ export const initialData = [
        id: 4,
       
        img: "img/Carta_05.png",
-       scale: {x:0.5,y:0.5},
+       scale: {x:0.25,y:0.25},
        rot: 0,
        zIndex: 3,
        anchor: {x:0.4, y:0.8},
@@ -56,7 +56,7 @@ export const initialData = [
      {
       id: 5,
       img: "img/Carta_06.png",
-      scale: {x:0.5,y:0.5},
+      scale: {x:0.25,y:0.25},
       rot: 0,
       zIndex: 0,
       anchor: {x:0.4, y:0.8},
@@ -65,7 +65,7 @@ export const initialData = [
      {
        id: 6,
        img: "img/Carta_07.png",
-       scale: {x:0.5,y:0.5},
+       scale: {x:0.25,y:0.25},
        rot: 0,
        zIndex: 0,
        anchor: {x:0.4, y:0.8},
@@ -74,7 +74,7 @@ export const initialData = [
       {
         id: 7,
         img: "img/Carta_08.png",
-        scale: {x:0.5,y:0.5},
+        scale: {x:0.25,y:0.25},
         rot: 0,
         zIndex: 0,
         anchor: {x:0.4, y:0.8},
@@ -84,7 +84,7 @@ export const initialData = [
         id: 8,
        
         img: "img/Carta_09.png",
-        scale: {x:0.5,y:0.5},
+        scale: {x:0.25,y:0.25},
         rot: 0,
         zIndex:0,
         anchor: {x:0.4, y:0.8},
@@ -94,7 +94,7 @@ export const initialData = [
          id: 9,
         
          img: "img/Carta_10.png",
-         scale: {x:0.5,y:0.5},
+         scale: {x:0.25,y:0.25},
          rot: 0,
          zIndex: 0,
          anchor: {x:0.4, y:0.8},

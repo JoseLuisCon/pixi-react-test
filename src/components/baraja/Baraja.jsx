@@ -1,26 +1,31 @@
 import React, { useEffect, useState, useRef } from "react";
 import { initialData } from "../decks/initialData";
-import { Sprite } from "@inlet/react-pixi";
+import { Sprite, Text, render, useApp } from "@inlet/react-pixi";
 
 import * as PIXI from "pixi.js";
 const TWEEN = require("@tweenjs/tween.js");
 
-export const Baraja = () => {
-
+export const Baraja = ({pos}) => {
+  
   const [cartasSprite, setCartasSprite] = useState(initialData);
 
   const isDragging = useRef(false);
   const isRetorning = useRef(false);
   const initialProps = useRef(null);
+  const referenciaSprite = useRef(null);
   const positionPointer = useRef({ x: 0, y: 0 });
   const alpha = useRef(1);
+  const app = useApp();
 
-  const reDistribution = ({ x, y }, arrayIn) => {
-    let xBar = x;
-    let yBar = y;
+ 
+
+
+  const reDistribution = (arrayIn) => {
+    let xBar = pos.x;
+    let yBar = pos.y;
 
     let initialAngle =
-    arrayIn.length === 1 ? 0 : Math.trunc(arrayIn.length / 2) * -2;
+      arrayIn.length === 1 ? 0 : Math.trunc(arrayIn.length / 2) * -2;
     let angle = initialAngle;
 
     const newCartasSprite = arrayIn.map((carta, index) => {
@@ -31,7 +36,8 @@ export const Baraja = () => {
       } else {
         angle = angle + 2;
       }
-      xBar = xBar + 60;
+
+      xBar = xBar + 50;
       return {
         rot: angle,
         anchor: { x: 0.5, y: 0.7 },
@@ -41,7 +47,7 @@ export const Baraja = () => {
       };
     });
 
-    return(newCartasSprite);
+    return newCartasSprite;
   };
 
   const showSelectedCard = (idCarta = 0, arraySprite) => {
@@ -55,6 +61,8 @@ export const Baraja = () => {
 
     newCartasSprite[idCarta].select = true;
     newCartasSprite[idCarta].zIndex = newCartasSprite.length;
+
+
 
     // A ambos lados se situan con un Zindex decreciente
     const zIndexMax = newCartasSprite.length;
@@ -71,9 +79,10 @@ export const Baraja = () => {
       if (indexCenter === newCartasSprite.length - 1) {
         cardsLeft = [...newCartasSprite.slice(0, indexCenter)];
         cardsRight = [];
+      } else{
+        cardsLeft = [...newCartasSprite.slice(0, indexCenter)];
+        cardsRight = [...newCartasSprite.slice(indexCenter + 1)];
       }
-      cardsLeft = [...newCartasSprite.slice(0, indexCenter)];
-      cardsRight = [...newCartasSprite.slice(indexCenter + 1)];
     } else {
       cardsLeft = [];
       cardsRight = [...newCartasSprite.slice(indexCenter + 1)];
@@ -98,29 +107,7 @@ export const Baraja = () => {
 
     newCartasSprite = [...cardsLeft, newCartasSprite[idCarta], ...cardsRight];
 
-    return newCartasSprite;
-  };
-
-  const deleteCard = () => {
-    // if (cartasSprite.length === 1) {
-    //   setCartasSprite([]);
-    // } else {
-    //   let newCartasSprite = cartasSprite.filter(
-    //     (carta) => carta.id !== initialProps.current.id
-    //   );
-      
-    //   newCartasSprite = newCartasSprite.map(
-    //      ({ id,  ...props }, index) => {
-    //        const newCart = { id: index, ...props };
-    //        return newCart;
-    //      }
-    //    );
-
-       
-
-    //   setCartasSprite(newCartasSprite);
-     
-    // }
+    return [...newCartasSprite];
   };
 
   //* ====================================  EFECTO RETORNO CON LIBRERÍA TWEEN ====================
@@ -166,6 +153,7 @@ export const Baraja = () => {
     initReturn();
     animate();
   };
+//* ====================================  FIN EFECTO RETORNO CON LIBRERÍA TWEEN ====================
 
   const onStart = (e) => {
     if (isRetorning.current) return;
@@ -175,6 +163,8 @@ export const Baraja = () => {
     isDragging.current = true;
 
     initialProps.current = cartasSprite[e.target.id];
+    referenciaSprite.current = e.target;
+    
 
     const newCartasSprite = cartasSprite.map((carta) => {
       if (carta.id === initialProps.current.id) {
@@ -243,7 +233,7 @@ export const Baraja = () => {
 
       // Comprobamos si cursor se encuentra en la parte derecha de la carta, es decir, vamos hacia la derecha
       if (
-        positionPointer.current.x > e.target?.x + 50 &&
+        positionPointer.current.x > e.target?.x + 30 &&
         positionPointer.current.y < e.target?.y + 100 &&
         positionPointer.current.y > e.target?.y - 200
       ) {
@@ -253,7 +243,7 @@ export const Baraja = () => {
 
         setCartasSprite(showSelectedCard(e.target?.id + 1, cartasSprite));
       } else if (
-        positionPointer.current.x < e.target?.x - 50 &&
+        positionPointer.current.x < e.target?.x - 30 &&
         positionPointer.current.y < e.target?.y + 100 &&
         positionPointer.current.y > e.target?.y - 200
       ) {
@@ -279,70 +269,98 @@ export const Baraja = () => {
         initialProps.current?.x - cartasSprite[initialProps.current?.id].x
       ) > 300
     ) {
-      // DELETING CARDS
-      console.log(" 🌕 borrando");
-      if (cartasSprite.length === 1) {
-           setCartasSprite([]);
-         } else {
-            
-           console.log("🚀 ~ file: Baraja.jsx:291 ~ onEnd ~ cartasSprite:", cartasSprite)
-           let newCartasSprite = cartasSprite.filter(
-             (carta) => carta.id !== initialProps.current.id 
-           );
-           console.log("🚀 ~ file: Baraja.jsx:289 ~ onEnd ~ newCartasSprite:", newCartasSprite)
-          
-           newCartasSprite = newCartasSprite.map(
-              ({ id,  ...props }, index) => {
-                const newCart = { id: index, ...props };
-                return newCart;
-              }
-            );
-          
-          const newArrayCartasRedistribuidas = reDistribution({x:400, y:500}, newCartasSprite) 
-          
-          const chekMaxId = newArrayCartasRedistribuidas[newArrayCartasRedistribuidas.length - 1].id;
-          if (chekMaxId === initialProps.current.id-1) {
-            setCartasSprite(showSelectedCard(chekMaxId, newArrayCartasRedistribuidas));
-          } else {
-           
-            setCartasSprite(showSelectedCard(initialProps.current?.id, newArrayCartasRedistribuidas));
-          }
-    
-        
-        }
       
-  
+                    // DELETING CARDS  //
+      
+      
+      if (cartasSprite.length === 1) {
+        setCartasSprite([]);
+      
+      } else {
+ 
+        // creamos nuevo array de cartas sin la carta que se ha eliminado
+        let newCartasSprite = cartasSprite.filter(
+          (carta) => carta.id !== initialProps.current.id
+        );
+    
+        // reasignamos los id de las cartas
+        newCartasSprite = newCartasSprite.map(({ id, ...props }, index) => {
+          const newCart = { id: index, ...props };
+          return newCart;
+        });
+
+        // recolocamos las cartas
+        const newArrayCartasRedistribuidas = reDistribution(
+                 newCartasSprite
+        );
+        
+        // Obtenemos el id de la última carta del array
+        const chekMaxId =
+        newArrayCartasRedistribuidas[newArrayCartasRedistribuidas.length - 1]
+        .id;
+        
+        // comprobamos si la carta que se ha eliminado es la última del array
+        if (chekMaxId === initialProps.current.id - 1) {
+          // FUNCIONA
+          setCartasSprite(
+            showSelectedCard(chekMaxId, newArrayCartasRedistribuidas)
+          );
+          console.log("🚀 ~ file: Baraja.jsx:311 ~ onEnd ~ newArrayCartasRedistribuidas:", newArrayCartasRedistribuidas)
+        } else {
+
+          // Si no es la última carta del array, seleccionamos la carta con el mismo id que la que se ha eliminado    
+          
+          // NO FUNCIONA
+          const newArray = showSelectedCard(
+            initialProps.current.id,
+            newArrayCartasRedistribuidas
+          )
+          setCartasSprite(
+            newArray
+            );
+            console.log("🚀 ~ file: Baraja.jsx:306 ~ onEnd ~ newArray:", newArray)
+        }
+      }
     } else {
       effectReturnCarta();
     }
-    
+
     alpha.current = 1;
   };
 
   useEffect(() => {
     if (cartasSprite.length !== 0) {
-      const newArray = reDistribution({ x: 400, y: 500 }, cartasSprite);
+      const newArray = reDistribution(cartasSprite);
       setCartasSprite(showSelectedCard(0, newArray));
-      
     }
   }, []);
 
+  useEffect(() => {
+    if (cartasSprite.length !== 0) {
+      render(<Text text={`Número de cartas ${cartasSprite.length}`} y={0} />, app.stage );
+
+    }
+  }, [cartasSprite.length])
+
+
   
+
+
   return (
     <>
       {cartasSprite.map(
         ({ id, img, x, y, anchor, zIndex, rot, scale, select }) => (
           <Sprite
-            accessiblePointerEvents="all"
+            ref={referenciaSprite}
             id={id}
             key={id}
             image={img}
-            position={{ x, y: select ? y - 50 : y }}
+            position={{ x, y: select ? y - 30 : y }}
             angle={rot}
             alpha={initialProps.current?.id === id ? alpha.current : 1}
             anchor={anchor}
             zIndex={zIndex}
-            scale={initialProps.current?.id === id ? scale : { x: 0.5, y: 0.5 }}
+            scale={scale}
             interactive={true}
             cursor="pointer"
             pointerdown={onStart}
