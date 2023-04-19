@@ -18,8 +18,6 @@ export const Baraja = ({pos}) => {
   const app = useApp();
 
  
-
-
   const reDistribution = (arrayIn) => {
     let xBar = pos.x;
     let yBar = pos.y;
@@ -109,7 +107,7 @@ export const Baraja = ({pos}) => {
 
     alpha.current = 1;
     
-    return [...newCartasSprite];
+    return newCartasSprite;
   };
 
   //* ====================================  EFECTO RETORNO CON LIBRERÍA TWEEN ====================
@@ -344,10 +342,6 @@ export const Baraja = ({pos}) => {
       
     }
   }, [cartasSprite.length])
-
-
-  
-
 
   return (
     <>
