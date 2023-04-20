@@ -1,30 +1,45 @@
+import React, {useRef} from "react";
+import { Sprite } from "@inlet/react-pixi";
 
-import { Sprite } from '@inlet/react-pixi'
 
+export const Carta = ({
+  id,
+  image,
+  position,
+  name,
+  alpha,
+  angle,
+  anchor,
+  zIndex,
+  scale,
+  clickStart,
+  clickEnd,
+  mouseMove,
+  passRef
+}) => {
 
-import React from 'react'
+  const referenciaSprite = useRef(null);
 
-export const Carta = ({id, img, position, name, rot, zIndex, anchor, handleChangeSprite}) => {
+  
+ passRef(referenciaSprite.current);
+
   return (
     <Sprite
       id={id}
-      key={id}
-      image={img}
-      interactive={true}
-      scale={0.5}
-      anchor={anchor}
-      // width={540}
-      // height={800}
-      angle={rot}
-      cursor={"pointer"}
-      name={name}
-      // alpha={indexCardSelect.current == carta.id ? alpha.current : 1}
+      ref={referenciaSprite}
+      image={image}
       position={position}
-       zIndex={ zIndex}
-       pointerdown={handleChangeSprite}
-      // pointerup={onEnd}
-      // pointerupoutside={onEnd}
-      
+      angle={angle}
+      alpha={alpha}
+      anchor={anchor}
+      zIndex={zIndex}
+      scale={scale}
+      interactive={true}
+      cursor="pointer"
+      pointerdown={clickStart}
+      pointerup={clickEnd}
+      pointermove={mouseMove}
+      name={name}
     />
-  )
-}
+  );
+};

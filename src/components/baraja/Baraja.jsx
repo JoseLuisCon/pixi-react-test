@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { initialData } from "../decks/initialData";
-import { Sprite, Text, render, useApp } from "@inlet/react-pixi";
+import { Text, render, useApp } from "@inlet/react-pixi";
+import { Carta } from "./Carta";
 
-import * as PIXI from "pixi.js";
 const TWEEN = require("@tweenjs/tween.js");
 
 export const Baraja = ({ pos }) => {
@@ -213,12 +213,9 @@ export const Baraja = ({ pos }) => {
       }
 
       setCartasSprite(newCartasSprite);
-
-    } 
-    
-    else 
+    }
     //================================    MANEJO DE LAS CARTAS CUANDO NO SE ENCUENTRAN DRAG AND DROP    ================================
-    {
+    else {
       // Modificamos la referencia a las coordenadas del ratón.
       positionPointer.current = {
         x: Math.trunc(e.data.global.x),
@@ -229,12 +226,15 @@ export const Baraja = ({ pos }) => {
       if (
         positionPointer.current.x > e.target?.x + 30 &&
         positionPointer.current.y >
-          e.target?.y - referenciaSprite.current?.height * referenciaSprite.current?.anchor.y && //Valor de y de la carta levantada
+          e.target?.y -
+            referenciaSprite.current?.height *
+              referenciaSprite.current?.anchor.y && //Valor de y de la carta levantada
         positionPointer.current.y <
-          e.target?.y + referenciaSprite.current?.height * (1-referenciaSprite.current?.anchor.y)  //Valor de y de la carta levantada
+          e.target?.y +
+            referenciaSprite.current?.height *
+              (1 - referenciaSprite.current?.anchor.y) //Valor de y de la carta levantada
         // referenciaSprite.current?.zIndex === e.target?.zIndex
       ) {
-        
         const checkIdFinal = cartasSprite[cartasSprite.length - 1].id;
 
         //Si estamos en la carta final habilitamos la zona para que se seleccione en caso de que no esté seleccionada
@@ -262,9 +262,13 @@ export const Baraja = ({ pos }) => {
       else if (
         positionPointer.current.x < e.target?.x - 30 &&
         positionPointer.current.y <
-          e.target?.y + referenciaSprite.current?.height / referenciaSprite.current?.anchor.y &&
+          e.target?.y +
+            referenciaSprite.current?.height /
+              referenciaSprite.current?.anchor.y &&
         positionPointer.current.y >
-          e.target?.y - referenciaSprite.current?.height  + (1-referenciaSprite.current?.anchor.y)
+          e.target?.y -
+            referenciaSprite.current?.height +
+            (1 - referenciaSprite.current?.anchor.y)
       ) {
         const checkIdInitial = cartasSprite[0].id;
 
@@ -369,12 +373,17 @@ export const Baraja = ({ pos }) => {
     }
   }, [cartasSprite.length]);
 
+  const passRef = (ref) => {
+    referenciaSprite.current = ref;
+  }
+
   return (
     <>
       {cartasSprite.map(
-        ({ id, img, x, y, anchor, zIndex, rot, scale, select }) => (
-          <Sprite
-            ref={referenciaSprite}
+        ({ id, img, x, y, anchor, zIndex, rot, scale, select  }) => (
+
+
+          <Carta
             id={id}
             key={id}
             image={img}
@@ -384,13 +393,12 @@ export const Baraja = ({ pos }) => {
             anchor={anchor}
             zIndex={zIndex}
             scale={scale}
-            interactive={true}
-            cursor="pointer"
-            pointerdown={onStart}
-            pointerup={onEnd}
-            // pointerupoutside={onEnd}
-            pointermove={onMove}
+            clickStart={onStart}
+            clickEnd={onEnd}
+            mouseMove={onMove}
             name={"carta" + id}
+            passRef={passRef}
+           
           />
         )
       )}
