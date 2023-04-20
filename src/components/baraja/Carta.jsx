@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React, {useRef ,useEffect} from "react";
 import { Sprite } from "@inlet/react-pixi";
 
 
@@ -19,15 +19,23 @@ export const Carta = ({
 }) => {
 
   const referenciaSprite = useRef(null);
+  const createTextureSprite = (image) =>{
+    console.log(image);
+  }
 
-  
- passRef(referenciaSprite.current);
+
+useEffect(() => {
+  createTextureSprite(image)
+  passRef(referenciaSprite.current);
+
+}, [])
+
 
   return (
     <Sprite
       id={id}
       ref={referenciaSprite}
-      image={image}
+      image={"img/Carta_02.png"}
       position={position}
       angle={angle}
       alpha={alpha}

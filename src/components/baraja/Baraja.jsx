@@ -2,11 +2,56 @@ import React, { useEffect, useState, useRef } from "react";
 import { initialData } from "../decks/initialData";
 import { Text, render, useApp } from "@inlet/react-pixi";
 import { Carta } from "./Carta";
+import { NewCarta } from "./NewCarta";
 
 const TWEEN = require("@tweenjs/tween.js");
 
-export const Baraja = ({ pos }) => {
-  const [cartasSprite, setCartasSprite] = useState(initialData);
+const mockData =  [ {
+  "bg-border": "img/border.png",
+  "bg-card": "img/bg_card.png",
+  rarity: "img/frame.png",
+  logo: "",
+  img: "img/img-card.png",
+  text: "Cosas que tiene la vida"
+},
+{
+  "bg-border": "img/border.png",
+  "bg-card": "img/bg_card.png",
+  rarity: "img/frame.png",
+  logo: "",
+  img: "img/img-card.png",
+  text: "Tóxico"
+},
+{
+  "bg-border": "img/border.png",
+  "bg-card": "img/bg_card.png",
+  rarity: "img/frame.png",
+  logo: "img/logo.png",
+  img: "img/img-card.png",
+  text: "Text Card"
+},
+{
+  "bg-border": "img/border.png",
+  "bg-card": "img/bg_card.png",
+  rarity: "img/frame.png",
+  logo: "img/logo.png",
+  img: "img/img-card.png",
+  text: ""
+},
+]
+// const mockData =  [ {
+//   "bg-border":"img/bg_card.png",
+//   "bg-card":"https://bridder-strapi.s3.eu-central-1.amazonaws.com/bg_blue_generic_04ef5399a0.png",
+//   "rarity":"https://bridder-strapi.s3.eu-central-1.amazonaws.com/frame_common_4d8c56a5b1.png",
+//   "logo":"https://bridder-strapi.s3.eu-central-1.amazonaws.com/Logo_Suja_1f96e7632f.png",
+//   "img":"https://bridder-strapi.s3.eu-central-1.amazonaws.com/1_card_34a46d66e3.png",
+//   "text":"Text Card"
+// }
+// ]
+
+
+export const Baraja = ({ pos, data }) => {
+  const [cartasSprite, setCartasSprite] = useState([]);
 
   const isDragging = useRef(false);
   const isRetorning = useRef(false);
@@ -16,6 +61,24 @@ export const Baraja = ({ pos }) => {
   const alpha = useRef(1);
   const app = useApp();
 
+  const createDataSprite = (mockData) =>{
+
+    return mockData.map ((data, index) => {
+
+      return {
+        id: index,
+        img: data,
+        scale: {x:0.25,y:0.25},
+        rot: 0,
+        zIndex: 0,
+        anchor: {x:0.4, y:0.8},
+        select:false
+      }
+
+    })
+
+
+  }
   const reDistribution = (arrayIn) => {
     let xBar = pos.x;
     let yBar = pos.y;
@@ -358,8 +421,10 @@ export const Baraja = ({ pos }) => {
   };
 
   useEffect(() => {
-    if (cartasSprite.length !== 0) {
-      const newArray = reDistribution(cartasSprite);
+    const cartaSpriteInitial = createDataSprite(mockData);
+
+    if (cartaSpriteInitial.length !== 0) {
+      const newArray = reDistribution(cartaSpriteInitial);
       setCartasSprite(showSelectedCard(0, newArray));
     }
   }, []);
@@ -379,11 +444,12 @@ export const Baraja = ({ pos }) => {
 
   return (
     <>
-      {cartasSprite.map(
+        
+      {
+       cartasSprite.map(
         ({ id, img, x, y, anchor, zIndex, rot, scale, select  }) => (
 
-
-          <Carta
+          <NewCarta
             id={id}
             key={id}
             image={img}
@@ -398,10 +464,12 @@ export const Baraja = ({ pos }) => {
             mouseMove={onMove}
             name={"carta" + id}
             passRef={passRef}
-           
+
           />
         )
-      )}
+      )
+      
+      }
     </>
   );
 };
