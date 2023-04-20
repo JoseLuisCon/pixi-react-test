@@ -71,6 +71,7 @@ export const ReSize = ({ x, y }) => {
         <Baraja pos={{x:300, y:400}} data={dataBaraja}/>
        
        </Container>
-     </Stage> 
+     </Stage>
+      
   );
 };

@@ -4,41 +4,45 @@ import { Text, render, useApp } from "@inlet/react-pixi";
 import { Carta } from "./Carta";
 import { NewCarta } from "./NewCarta";
 
+import sonidoDeleteCard from "../../assets/sound/card-deleted.mp3";
+import sonidoDeleteLastCard from "../../assets/sound/last-card-deleted.mp3";
+
 const TWEEN = require("@tweenjs/tween.js");
 
-const mockData =  [ {
-  "bg-border": "img/border.png",
-  "bg-card": "img/bg_card.png",
-  rarity: "img/frame.png",
-  logo: "",
-  img: "img/img-card.png",
-  text: "Cosas que tiene la vida"
-},
-{
-  "bg-border": "img/border.png",
-  "bg-card": "img/bg_card.png",
-  rarity: "img/frame.png",
-  logo: "",
-  img: "img/img-card.png",
-  text: "Tóxico"
-},
-{
-  "bg-border": "img/border.png",
-  "bg-card": "img/bg_card.png",
-  rarity: "img/frame.png",
-  logo: "img/logo.png",
-  img: "img/img-card.png",
-  text: "Text Card"
-},
-{
-  "bg-border": "img/border.png",
-  "bg-card": "img/bg_card.png",
-  rarity: "img/frame.png",
-  logo: "img/logo.png",
-  img: "img/img-card.png",
-  text: ""
-},
-]
+const mockData = [
+  {
+    "bg-border": "img/border.png",
+    "bg-card": "img/bg_card.png",
+    rarity: "img/frame.png",
+    logo: "",
+    img: "img/img-card.png",
+    text: "Cosas que tiene la vida",
+  },
+  {
+    "bg-border": "img/border.png",
+    "bg-card": "img/bg_card.png",
+    rarity: "img/frame.png",
+    logo: "",
+    img: "img/img-card.png",
+    text: "Tóxico",
+  },
+  {
+    "bg-border": "img/border.png",
+    "bg-card": "img/bg_card.png",
+    rarity: "img/frame.png",
+    logo: "img/logo.png",
+    img: "img/img-card.png",
+    text: "Text Card",
+  },
+  {
+    "bg-border": "img/border.png",
+    "bg-card": "img/bg_card.png",
+    rarity: "img/frame.png",
+    logo: "img/logo.png",
+    img: "img/img-card.png",
+    text: "",
+  },
+];
 // const mockData =  [ {
 //   "bg-border":"img/bg_card.png",
 //   "bg-card":"https://bridder-strapi.s3.eu-central-1.amazonaws.com/bg_blue_generic_04ef5399a0.png",
@@ -48,7 +52,6 @@ const mockData =  [ {
 //   "text":"Text Card"
 // }
 // ]
-
 
 export const Baraja = ({ pos, data }) => {
   const [cartasSprite, setCartasSprite] = useState([]);
@@ -61,24 +64,39 @@ export const Baraja = ({ pos, data }) => {
   const alpha = useRef(1);
   const app = useApp();
 
-  const createDataSprite = (mockData) =>{
+  const initSoundDeletedCard = (selecTrack) => {
+    let audioSelected = "";
+    switch (selecTrack) {
+      case 1:
+        audioSelected = sonidoDeleteCard;
+        break;
+      case 0:
+        audioSelected = sonidoDeleteLastCard;
+        break;
+      default:
+        break;
+    }
 
-    return mockData.map ((data, index) => {
+    const audio = new Audio(audioSelected);
 
+    audio.volume = 0.5;
+    audio.muted = false;
+    audio.play();
+  };
+
+  const createDataSprite = (mockData) => {
+    return mockData.map((data, index) => {
       return {
         id: index,
         img: data,
-        scale: {x:0.25,y:0.25},
+        scale: { x: 0.25, y: 0.25 },
         rot: 0,
         zIndex: 0,
-        anchor: {x:0.4, y:0.8},
-        select:false
-      }
-
-    })
-
-
-  }
+        anchor: { x: 0.4, y: 0.8 },
+        select: false,
+      };
+    });
+  };
   const reDistribution = (arrayIn) => {
     let xBar = pos.x;
     let yBar = pos.y;
@@ -372,7 +390,9 @@ export const Baraja = ({ pos, data }) => {
 
       if (cartasSprite.length === 1) {
         setCartasSprite([]);
+        initSoundDeletedCard( 0);
       } else {
+        initSoundDeletedCard(1);
         // creamos nuevo array de cartas sin la carta que se ha eliminado
         let newCartasSprite = cartasSprite.filter(
           (carta) => carta.id !== initialProps.current.id
@@ -440,15 +460,12 @@ export const Baraja = ({ pos, data }) => {
 
   const passRef = (ref) => {
     referenciaSprite.current = ref;
-  }
+  };
 
   return (
     <>
-        
-      {
-       cartasSprite.map(
-        ({ id, img, x, y, anchor, zIndex, rot, scale, select  }) => (
-
+      {cartasSprite.map(
+        ({ id, img, x, y, anchor, zIndex, rot, scale, select }) => (
           <NewCarta
             id={id}
             key={id}
@@ -464,12 +481,9 @@ export const Baraja = ({ pos, data }) => {
             mouseMove={onMove}
             name={"carta" + id}
             passRef={passRef}
-
           />
         )
-      )
-      
-      }
+      )}
     </>
   );
 };

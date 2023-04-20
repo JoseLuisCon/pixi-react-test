@@ -18,9 +18,8 @@ export const NewCarta = ({
   mouseMove,
   passRef,
 }) => {
- 
   const referenciaSprite = useRef(null);
-  
+
   useEffect(() => {
     //  fetch(image["bg-border"])
     //    .then(data => data.json)
@@ -29,68 +28,61 @@ export const NewCarta = ({
 
     passRef(referenciaSprite.current);
   }, []);
-    
-  
+
   return (
     <>
-      <Container 
-        position={position} 
-        zIndex={zIndex} 
-        sortableChildren={true} 
+      <Container
+        position={position}
+        zIndex={zIndex}
+        sortableChildren={true}
         interactive={true}
         id={id}
-        angle={angle} 
+        angle={angle}
         name={name}
         pointerdown={clickStart}
         pointerup={clickEnd}
         pointermove={mouseMove}
         cursor="pointer"
-        >
+      >
         <Sprite
-         ref={referenciaSprite}
-         image={image["bg-border"]}
-         alpha={alpha}
-         scale={scale}
-         anchor={anchor}
-         angle={angle} 
-         
-        />
-        <Sprite
-         image={image["bg-card"]}
-         alpha={alpha}
-         scale={scale}
-         anchor={anchor}
-         angle={angle} 
-         
-        />
-        <Sprite
-         image={image["rarity"]}
-         alpha={alpha}
-         scale={scale}
-         anchor={anchor}
-         angle={angle} 
-         
-        />
-        {image["logo"] !== "" &&
-        
-          <Sprite
-          image={image["logo"]}
+          ref={referenciaSprite}
+          image={image["bg-border"]}
           alpha={alpha}
           scale={scale}
           anchor={anchor}
-          angle={angle} 
-          
-          />
-        }
-        <Sprite
-         image={image["img"]}
-         alpha={alpha}
-         scale={scale}
-         anchor={anchor}
-         angle={angle} 
-         
+          angle={angle}
         />
-             
+        <Sprite
+          image={image["bg-card"]}
+          alpha={alpha}
+          scale={scale}
+          anchor={anchor}
+          angle={angle}
+        />
+        <Sprite
+          image={image["rarity"]}
+          alpha={alpha}
+          scale={scale}
+          anchor={anchor}
+          angle={angle}
+        />
+        {image["logo"] !== "" && (
+          <Sprite
+            image={image["logo"]}
+            alpha={alpha}
+            scale={scale}
+            anchor={anchor}
+            angle={angle}
+          />
+        )}
+        <Sprite
+          image={image["img"]}
+          alpha={alpha}
+          scale={scale}
+          anchor={anchor}
+          angle={angle}
+        />
+
         <Text
           text={image["text"]}
           zIndex={zIndex}
@@ -104,10 +96,8 @@ export const NewCarta = ({
               align: "center",
               wordWrap: true,
               wordWrapWidth: referenciaSprite.current?.width - 10,
-              
             })
           }
-
         />
       </Container>
     </>
