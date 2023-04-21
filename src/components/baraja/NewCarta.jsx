@@ -38,19 +38,21 @@ export const NewCarta = ({
         interactive={true}
         id={id}
         angle={angle}
-        name={name}
         pointerdown={clickStart}
         pointerup={clickEnd}
         pointermove={mouseMove}
         cursor="pointer"
-      >
+        anchor={anchor}
+        
+        >
         <Sprite
           ref={referenciaSprite}
           image={image["bg-border"]}
           alpha={alpha}
           scale={scale}
-          anchor={anchor}
           angle={angle}
+          anchor={anchor}
+          name={name}
         />
         <Sprite
           image={image["bg-card"]}

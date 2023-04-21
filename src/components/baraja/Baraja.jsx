@@ -6,6 +6,7 @@ import { NewCarta } from "./NewCarta";
 
 import sonidoDeleteCard from "../../assets/sound/card-deleted.mp3";
 import sonidoDeleteLastCard from "../../assets/sound/last-card-deleted.mp3";
+import sonidoRebote from "../../assets/sound/rebote.mp3";
 
 const TWEEN = require("@tweenjs/tween.js");
 
@@ -67,19 +68,20 @@ export const Baraja = ({ pos, data }) => {
   const initSoundDeletedCard = (selecTrack) => {
     let audioSelected = "";
     switch (selecTrack) {
-      case 1:
-        audioSelected = sonidoDeleteCard;
-        break;
       case 0:
         audioSelected = sonidoDeleteLastCard;
         break;
-      default:
+      case 1:
+        audioSelected = sonidoDeleteCard;
         break;
-    }
+      case 2:
+        audioSelected = sonidoRebote;
+
+      }
 
     const audio = new Audio(audioSelected);
 
-    audio.volume = 0.5;
+    audio.volume = 0.2;
     audio.muted = false;
     audio.play();
   };
@@ -211,6 +213,7 @@ export const Baraja = ({ pos, data }) => {
             return carta;
           }
         });
+        
         setCartasSprite(newCartasSprite);
       })
       .start()
@@ -241,6 +244,7 @@ export const Baraja = ({ pos, data }) => {
 
     initialProps.current = cartasSprite[e.target.id];
     referenciaSprite.current = e.target;
+    console.log("🚀 ~ file: Baraja.jsx:247 ~ onStart ~ referenciaSprite.current:", referenciaSprite.current)
 
     const newCartasSprite = cartasSprite.map((carta) => {
       if (carta.id === initialProps.current.id) {
@@ -303,28 +307,20 @@ export const Baraja = ({ pos, data }) => {
         y: Math.trunc(e.data.global.y),
       };
 
-      //================================    MANEJO DE LAS CARTAS CUANDO NOS DESPLAZAMOS HACIA LA DERECHA    ================================
+      //================================   NOS DESPLAZAMOS HACIA LA DERECHA    ================================
       if (
         positionPointer.current.x > e.target?.x + 30 &&
-        positionPointer.current.y >
-          e.target?.y -
-            referenciaSprite.current?.height *
-              referenciaSprite.current?.anchor.y && //Valor de y de la carta levantada
-        positionPointer.current.y <
-          e.target?.y +
-            referenciaSprite.current?.height *
-              (1 - referenciaSprite.current?.anchor.y) //Valor de y de la carta levantada
+        positionPointer.current?.y < e.target?.y +  referenciaSprite.current?.height * (1 - referenciaSprite.current?.anchor?.y) && //Valor de y de la carta levantada
+        positionPointer.current?.y > e.target?.y -  referenciaSprite.current?.height * referenciaSprite.current?.anchor?.y  //Valor de y de la carta levantada
         // referenciaSprite.current?.zIndex === e.target?.zIndex
       ) {
-        const checkIdFinal = cartasSprite[cartasSprite.length - 1].id;
-
+        
         //Si estamos en la carta final habilitamos la zona para que se seleccione en caso de que no esté seleccionada
-
+        const checkIdFinal = cartasSprite[cartasSprite.length - 1].id;
         if (
           checkIdFinal === e.target?.id &&
           positionPointer.current.x > e.target?.x &&
-          positionPointer.current.x <
-            e.target?.x + referenciaSprite.current?.width &&
+          positionPointer.current.x < e.target?.x + referenciaSprite.current?.width &&
           cartasSprite[e.target?.id].zIndex !== cartasSprite.length
         ) {
           setCartasSprite(showSelectedCard(e.target?.id, cartasSprite));
@@ -342,22 +338,17 @@ export const Baraja = ({ pos, data }) => {
       //================================    MANEJO DE LAS CARTAS CUANDO NOS DESPLAZAMOS HACIA LA IZQUIERDA    ================================
       else if (
         positionPointer.current.x < e.target?.x - 30 &&
-        positionPointer.current.y <
-          e.target?.y +
-            referenciaSprite.current?.height /
-              referenciaSprite.current?.anchor.y &&
-        positionPointer.current.y >
-          e.target?.y -
-            referenciaSprite.current?.height +
-            (1 - referenciaSprite.current?.anchor.y)
+        positionPointer.current.y < e.target?.y + referenciaSprite.current?.height * referenciaSprite.current?.anchor.y &&
+        positionPointer.current.y > e.target?.y - referenciaSprite.current?.height * (1 - referenciaSprite.current?.anchor.y)
       ) {
+        console.log("🚀 ~ file: Baraja.jsx:344 ~ onMove ~ referenciaSprite.current?.height:", referenciaSprite.current)
+        
+        
         const checkIdInitial = cartasSprite[0].id;
-
         if (
           checkIdInitial === e.target?.id &&
           positionPointer.current.x < e.target?.x &&
-          positionPointer.current.x >
-            e.target?.x - referenciaSprite.current?.width &&
+          positionPointer.current.x > e.target?.x - referenciaSprite.current?.width / 2 &&
           cartasSprite[e.target?.id].zIndex !== cartasSprite.length
         ) {
           setCartasSprite(showSelectedCard(e.target?.id, cartasSprite));
@@ -373,6 +364,13 @@ export const Baraja = ({ pos, data }) => {
     }
   };
 
+  const getNewReferenceSprite = (idCartas) => {
+
+    const newReferenceSprite = app.stage.getChildByName("carta"+idCartas,true);
+
+    return newReferenceSprite;
+
+  }
   const onEnd = () => {
     isDragging.current = false;
 
@@ -390,54 +388,48 @@ export const Baraja = ({ pos, data }) => {
 
       if (cartasSprite.length === 1) {
         setCartasSprite([]);
-        initSoundDeletedCard( 0);
+        initSoundDeletedCard(0);
       } else {
-        initSoundDeletedCard(1);
         // creamos nuevo array de cartas sin la carta que se ha eliminado
         let newCartasSprite = cartasSprite.filter(
           (carta) => carta.id !== initialProps.current.id
-        );
-
-        // reasignamos los id de las cartas
-        newCartasSprite = newCartasSprite.map(({ id, ...props }, index) => {
-          const newCart = { id: index, ...props };
-          return newCart;
-        });
-
-        // recolocamos las cartas
-        const newArrayCartasRedistribuidas = reDistribution(newCartasSprite);
-
-        // Obtenemos el id de la última carta del array
-        const chekMaxId =
-          newArrayCartasRedistribuidas[newArrayCartasRedistribuidas.length - 1]
-            .id;
-
-        // comprobamos si la carta que se ha eliminado es la última del array
-        if (chekMaxId === initialProps.current.id - 1) {
-          // FUNCIONA
-          setCartasSprite(
-            showSelectedCard(chekMaxId, newArrayCartasRedistribuidas)
           );
-        } else {
-          // Si no es la última carta del array, seleccionamos la carta con el mismo id que la que se ha eliminado
-
-          const newArray = showSelectedCard(
-            initialProps.current.id,
-            newArrayCartasRedistribuidas
-          );
-
-          setCartasSprite(newArray);
-          // const removeSprite = app.stage.getChildByName(referenciaSprite.current?.name, true);
-          // const container = removeSprite?.parent;
-          // container?.removeChild(removeSprite);
-          // console.log("🚀 ~ file: Baraja.jsx:345 ~ useEffect ~ removeSprite:", removeSprite?.name)
-        }
-      }
-    } else {
-      effectReturnCarta();
-    }
-
-    alpha.current = 1;
+          
+          // reasignamos los id de las cartas
+          newCartasSprite = newCartasSprite.map(({ id, ...props }, index) => {
+            const newCart = { id: index, ...props };
+            return newCart;
+          });
+          
+          // recolocamos las cartas
+          const newArrayCartasRedistribuidas = reDistribution(newCartasSprite);
+          
+          // Obtenemos el id de la última carta del array
+          const chekMaxId = newArrayCartasRedistribuidas[newArrayCartasRedistribuidas.length - 1].id;
+          
+          // comprobamos si la carta que se ha eliminado es la última del array
+          if (chekMaxId === initialProps.current.id - 1) {
+            // FUNCIONA
+            setCartasSprite( showSelectedCard(chekMaxId, newArrayCartasRedistribuidas) );
+            referenciaSprite.current = getNewReferenceSprite(chekMaxId);
+            
+            } else {
+              // Si no es la última carta del array, seleccionamos la carta con el mismo id que la que se ha eliminado
+              
+              const newArray = showSelectedCard( initialProps.current.id, newArrayCartasRedistribuidas );
+              
+                setCartasSprite(newArray);
+                referenciaSprite.current = getNewReferenceSprite(initialProps.current.id);
+              }
+              initSoundDeletedCard(1);
+              
+            }
+          } else {
+            effectReturnCarta();
+            initSoundDeletedCard(2);
+          }
+          
+          alpha.current = 1;
   };
 
   useEffect(() => {
