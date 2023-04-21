@@ -10,40 +10,7 @@ import sonidoRebote from "../../assets/sound/rebote.mp3";
 
 const TWEEN = require("@tweenjs/tween.js");
 
-const mockData = [
-  {
-    "bg-border": "img/border.png",
-    "bg-card": "img/bg_card.png",
-    rarity: "img/frame.png",
-    logo: "",
-    img: "img/img-card.png",
-    text: "Cosas que tiene la vida",
-  },
-  {
-    "bg-border": "img/border.png",
-    "bg-card": "img/bg_card.png",
-    rarity: "img/frame.png",
-    logo: "",
-    img: "img/img-card.png",
-    text: "Tóxico",
-  },
-  {
-    "bg-border": "img/border.png",
-    "bg-card": "img/bg_card.png",
-    rarity: "img/frame.png",
-    logo: "img/logo.png",
-    img: "img/img-card.png",
-    text: "Text Card",
-  },
-  {
-    "bg-border": "img/border.png",
-    "bg-card": "img/bg_card.png",
-    rarity: "img/frame.png",
-    logo: "img/logo.png",
-    img: "img/img-card.png",
-    text: "",
-  },
-];
+
 // const mockData =  [ {
 //   "bg-border":"img/bg_card.png",
 //   "bg-card":"https://bridder-strapi.s3.eu-central-1.amazonaws.com/bg_blue_generic_04ef5399a0.png",
@@ -431,7 +398,7 @@ export const Baraja = ({ pos, data }) => {
   };
 
   useEffect(() => {
-    const cartaSpriteInitial = createDataSprite(mockData);
+    const cartaSpriteInitial = createDataSprite(data);
 
     if (cartaSpriteInitial.length !== 0) {
       const newArray = reDistribution(cartaSpriteInitial);

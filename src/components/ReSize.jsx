@@ -26,21 +26,55 @@ const options = {
   autoDensity: true,
 };
 
-const mockData =  [ {
-    "bg-border":"https://bridder-strapi.s3.eu-central-1.amazonaws.com/border_common_527d95ff75.png",
-    "bg-card":"https://bridder-strapi.s3.eu-central-1.amazonaws.com/bg_blue_generic_04ef5399a0.png",
-    "rarity":"https://bridder-strapi.s3.eu-central-1.amazonaws.com/frame_common_4d8c56a5b1.png",
-    "logo":"https://bridder-strapi.s3.eu-central-1.amazonaws.com/Logo_Suja_1f96e7632f.png",
-    "img":"https://bridder-strapi.s3.eu-central-1.amazonaws.com/1_card_34a46d66e3.png",
-    "text":"Text Card"
-  }
-]
+// const mockData =  [ {
+//     "bg-border":"https://bridder-strapi.s3.eu-central-1.amazonaws.com/border_common_527d95ff75.png",
+//     "bg-card":"https://bridder-strapi.s3.eu-central-1.amazonaws.com/bg_blue_generic_04ef5399a0.png",
+//     "rarity":"https://bridder-strapi.s3.eu-central-1.amazonaws.com/frame_common_4d8c56a5b1.png",
+//     "logo":"https://bridder-strapi.s3.eu-central-1.amazonaws.com/Logo_Suja_1f96e7632f.png",
+//     "img":"https://bridder-strapi.s3.eu-central-1.amazonaws.com/1_card_34a46d66e3.png",
+//     "text":"Text Card"
+//   }
+// ]
 
+const mockData = [
+  {
+    "bg-border": "img/border.png",
+    "bg-card": "img/bg_card.png",
+    rarity: "img/frame.png",
+    logo: "",
+    img: "img/img-card.png",
+    text: "Cosas que tiene la vida",
+  },
+  {
+    "bg-border": "img/border.png",
+    "bg-card": "img/bg_card.png",
+    rarity: "img/frame.png",
+    logo: "",
+    img: "img/img-card.png",
+    text: "Tóxico",
+  },
+  {
+    "bg-border": "img/border.png",
+    "bg-card": "img/bg_card.png",
+    rarity: "img/frame.png",
+    logo: "img/logo.png",
+    img: "img/img-card.png",
+    text: "Text Card",
+  },
+  {
+    "bg-border": "img/border.png",
+    "bg-card": "img/bg_card.png",
+    rarity: "img/frame.png",
+    logo: "img/logo.png",
+    img: "img/img-card.png",
+    text: "",
+  },
+];
 
 /* COMPONENTE QUE SE ADAPTA AL TAMAÑO DE LA PANTALLA */
 export const ReSize = ({ x, y }) => {
   
-  const [dataBaraja, setDataBaraja] = useState(null);
+  const [dataBaraja, setDataBaraja] = useState(mockData);
   
 
 
