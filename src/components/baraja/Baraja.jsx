@@ -244,7 +244,6 @@ export const Baraja = ({ pos, data }) => {
 
     initialProps.current = cartasSprite[e.target.id];
     referenciaSprite.current = e.target;
-    console.log("🚀 ~ file: Baraja.jsx:247 ~ onStart ~ referenciaSprite.current:", referenciaSprite.current)
 
     const newCartasSprite = cartasSprite.map((carta) => {
       if (carta.id === initialProps.current.id) {
@@ -338,10 +337,9 @@ export const Baraja = ({ pos, data }) => {
       //================================    MANEJO DE LAS CARTAS CUANDO NOS DESPLAZAMOS HACIA LA IZQUIERDA    ================================
       else if (
         positionPointer.current.x < e.target?.x - 30 &&
-        positionPointer.current.y < e.target?.y + referenciaSprite.current?.height * referenciaSprite.current?.anchor.y &&
-        positionPointer.current.y > e.target?.y - referenciaSprite.current?.height * (1 - referenciaSprite.current?.anchor.y)
+        positionPointer.current.y < e.target?.y + referenciaSprite.current?.height / referenciaSprite.current?.anchor.y &&
+        positionPointer.current.y > e.target?.y - referenciaSprite.current?.height + (1 - referenciaSprite.current?.anchor.y)
       ) {
-        console.log("🚀 ~ file: Baraja.jsx:344 ~ onMove ~ referenciaSprite.current?.height:", referenciaSprite.current)
         
         
         const checkIdInitial = cartasSprite[0].id;
