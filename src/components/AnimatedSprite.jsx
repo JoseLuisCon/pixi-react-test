@@ -13,7 +13,7 @@ export const SpriteAnimated = ({ x, y, endAnimation, setDestroy }) => {
   let animatedSpt = useRef();
   let app = useApp();
 
-  useEffect(() => {
+  useEffect(async () => {
     if (frames.length === 0) {
       app.loader.add(spritesheet).load((_, resource) => {
         setFrames(
@@ -29,21 +29,17 @@ export const SpriteAnimated = ({ x, y, endAnimation, setDestroy }) => {
     if (endAnimation) animatedSpt.current?.play();
   }, [endAnimation]);
 
-   
   if (frames.length === 0) {
     return null;
   }
 
   return (
     <AnimatedSprite
-     
       ref={animatedSpt}
       animationSpeed={0.25}
       scale={{ x: 0.35, y: 0.35 }}
       isPlaying={false}
       textures={frames}
-      initialFrame={0}
-      anchor={0.5}
       x={x}
       y={y}
       loop={false}

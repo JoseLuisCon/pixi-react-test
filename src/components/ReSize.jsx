@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Container, Stage } from "@inlet/react-pixi";
+import { useEffect, useState, useRef } from "react";
+import { Container, Stage, Text, render, useApp } from "@inlet/react-pixi";
 import { CardDragDrop } from "./CardDragAndDrop";
 import { CardExplosion } from "./CardExplosion";
 import { CardTween } from "./CardTween";
@@ -10,11 +10,11 @@ import { VideoPixi } from "./VideoPixi";
 import { VideoPixiRedim } from "./VideoPixi copy";
 import { Baraja } from "./baraja/Baraja";
 import { NewCarta } from "./baraja/NewCarta";
-
+import { LaunchCard } from "./launchCard/LaunchCard";
 
 const getSize = () => ({
   width: window.innerWidth,
-  height: window.innerHeight,
+  height: window.innerHeight - 100,
 });
 
 const initialSize = getSize();
@@ -70,42 +70,58 @@ const mockData = [
     text: "",
   },
 ];
+const ButtonLaunchCard = ({ launchCard }) => {
+  const [isHovering, setIsHovering] = useState(false);
+  const cont = useRef(0);
+  const handleHover = () => setIsHovering(!isHovering);
+  const styleButton = {
+    backgroundColor: isHovering ? "#a39db2" : "transparent",
+    font: "bold 20px sans-serif",
+    padding: "5px 10px",
+    borderRadius: "5px",
+    border: "none",
+    cursor: "pointer",
+  };
+  return (
+    <button
+      style={styleButton}
+      onMouseEnter={handleHover}
+      onMouseLeave={handleHover}
+      onClick={() => launchCard(cont.current++)}
+    >
+      Lounch Card
+    </button>
+  );
+};
 
 /* COMPONENTE QUE SE ADAPTA AL TAMAÑO DE LA PANTALLA */
 export const ReSize = ({ x, y }) => {
-  
-  const [dataBaraja, setDataBaraja] = useState(mockData);
-  
+  const [dataCarta, setDataCarta] = useState(null);
 
-
-
-  // POSIBLE SITIO PARA RECIBIR LA DATA (FETCH)
-  useEffect(()=>{
-
-    // const mockData = fetch ( https: ...)
-      setDataBaraja(mockData);
-     
-  },[])
-
-
-
-
+  const launchCard = (id) => {
+    !mockData[id] ? setDataCarta(null) : setDataCarta(() => mockData[id]);
+  };
 
   return (
-    
+    <>
+      <div
+        className="botonLaunch"
+        style={{
+          width: "100%",
+          padding: 10,
+          background: "#eee",
+        }}
+      >
+        <ButtonLaunchCard launchCard={launchCard} />
+      </div>
+
       <Stage {...initialSize} options={options}>
-       <Container sortableChildren={true} >
-         {/* <VideoPixi /> */}
-         {/* <VideoPixiRedim /> */}
-         {/* <CardExplosion x={900} y={300} />  */}
-        
-       {/*  <Baraja />  */}
-        {/* <CardTween /> */}
-        {/* <Decks/> */}
-        <Baraja pos={{x:300, y:400}} data={dataBaraja}/>
-       
-       </Container>
-     </Stage>
-      
+        {dataCarta !== null && (
+          <LaunchCard
+            dataCard={{ data: dataCarta, x: 300, y: 200 }}
+          ></LaunchCard>
+        )}
+      </Stage>
+    </>
   );
 };
